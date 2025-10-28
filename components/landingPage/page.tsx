@@ -216,7 +216,7 @@ export default function LandingPage() {
             <FeaturesCarousel />
           </section>
           {/* information section */}
-          <section className="relative pb-12 mt-24 z-10">
+          <section className="relative pb-12 mt-24 z-10 px-4">
             <h1
               ref={infoTitleRef.ref}
               className={`text-5xl font-bold text-white mb-4 animate-fade-in-up ${
@@ -236,7 +236,7 @@ export default function LandingPage() {
             </p>
           </section>
           {/* CTA section */}
-          <section className="relative pb-24 bg-[#07141a] pt-12 z-10">
+          <section className="relative pb-24 bg-[#07141a] pt-12 z-10 px-4">
             {/* background image /landingPage/hands-reaching.jpg*/}
             <img
               src="/landingPage/hands-reaching.jpg"
