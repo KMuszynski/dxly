@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "logo": "DXLY",
+    "login": "Login",
+    "features": "Features",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Support doctors, not replace them.",
+    "subtitle": "Your intelligent co-pilot for clinical reasoning. DXLY helps clinicians move from symptoms to clarity with AI-assisted insights. By analyzing patterns, surfacing possibilities, and providing evidence-based differentials, DXLY empowers doctors to make faster, more confident decisions — without losing the human touch."
+  },
+  "features": {
+    "title": "Why DXLY",
+    "1": {
+      "title": "Faster differentials",
+      "description": "Instantly see likely diagnoses based on patient symptoms."
+    },
+    "2": {
+      "title": "AI-powered reasoning",
+      "description": "Trained on trusted clinical data, built for interpretability."
+    },
+    "3": {
+      "title": "Human-in-the-loop",
+      "description": "Every insight is designed to assist, not automate, your judgment."
+    },
+    "4": {
+      "title": "Privacy-first",
+      "description": "Patient data stays secure and compliant."
+    }
+  },
+  "info": {
+    "title": "Built for clinicians. Designed for clarity.",
+    "subtitle": "DXLY integrates seamlessly into your workflow — whether you're in clinic, hospital, or on call. No jargon. No black box. Just clarity when it matters most."
+  },
+  "cta": {
+    "title": "Get early access",
+    "subtitle": "Be among the first to streamline your clinical workflow with AI.",
+    "button": "Join the waitlist"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to revolutionize medical diagnosis? Let's talk.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us about your needs...",
+    "button": "Send Message",
+    "sending": "Sending...",
+    "successMessage": "Thank you! Your message has been sent successfully.",
+    "errorMessage": "Sorry, there was an error sending your message. Please try again."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "logo": "DXLY",
+    "login": "Zaloguj się",
+    "features": "Funkcje",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "Wspieraj lekarzy, nie zastępuj ich.",
+    "subtitle": "Twój inteligentny współpilot w rozumowaniu klinicznym. DXLY pomaga klinicystom przejść od objawów do jasności dzięki wsparciu AI. Analizując wzorce, odkrywając możliwości i dostarczając różnicowania oparte na dowodach, DXLY umożliwia lekarzom podejmowanie szybszych, bardziej pewnych decyzji — bez utraty ludzkiego dotyku."
+  },
+  "features": {
+    "title": "Dlaczego DXLY",
+      "1": {
+      "title": "Szybsze różnicowania",
+      "description": "Natychmiast zobacz prawdopodobne diagnozy na podstawie objawów pacjenta."
+    },
+    "2": {
+      "title": "Rozumowanie oparte na AI",
+      "description": "Wyszkolone na zaufanych danych klinicznych, zbudowane dla interpretowalności."
+    },
+    "3": {
+      "title": "Człowiek w pętli",
+      "description": "Każdy wgląd jest zaprojektowany, aby pomagać, nie automatyzować, twojej oceny."
+    },
+    "4": {
+      "title": "Prywatność na pierwszym miejscu",
+      "description": "Dane pacjentów pozostają bezpieczne i zgodne z przepisami."
+    }
+  },
+  "info": {
+    "title": "Zbudowane dla klinicystów. Zaprojektowane dla jasności.",
+    "subtitle": "DXLY integruje się bezproblemowo z twoim przepływem pracy — czy jesteś w klinice, szpitalu, czy na dyżurze. Bez żargonu. Bez czarnej skrzynki. Tylko jasność, gdy ma to największe znaczenie."
+  },
+  "cta": {
+    "title": "Uzyskaj wczesny dostęp",
+    "subtitle": "Bądź wśród pierwszych, którzy zautomatyzują swoją pracę kliniczną dzięki AI.",
+    "button": "Dołącz do listy oczekujących"
+  },
+  "contact": {
+    "title": "Skontaktuj się",
+    "subtitle": "Gotowy na rewolucję w diagnozie medycznej? Porozmawiajmy.",
+    "nameLabel": "Imię i nazwisko",
+    "namePlaceholder": "Twoje pełne imię i nazwisko",
+    "emailLabel": "Email",
+    "emailPlaceholder": "twoj.email@example.com",
+    "messageLabel": "Wiadomość",
+    "messagePlaceholder": "Opowiedz nam o swoich potrzebach...",
+    "button": "Wyślij wiadomość",
+    "sending": "Wysyłanie...",
+    "successMessage": "Dziękujemy! Twoja wiadomość została wysłana pomyślnie.",
+    "errorMessage": "Przepraszamy, wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie."
+  }
+}
