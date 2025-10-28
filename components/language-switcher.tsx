@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "pl", name: "Polski", flag: "🇵🇱" },
+  { code: "EN", name: "English", flag: "🇺🇸" },
+  { code: "PL", name: "Polski", flag: "🇵🇱" },
 ];
 
 export function LanguageSwitcher() {

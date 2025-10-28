@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { ArrowRight, Globe, Link } from "lucide-react";
+import { ArrowDown, ArrowRight, Globe, Link } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
 import { FeaturesCarousel } from "@/components/landingPage/features-carousel";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { useIntersectionObserver } from "@/lib/useIntersectionObserver";
 
 // 5a189a primary color
 
@@ -19,11 +20,40 @@ export default function LandingPage() {
     "idle" | "success" | "error"
   >("idle");
 
+  // Animation hooks
+  const heroTitleRef = useIntersectionObserver<HTMLHeadingElement>({
+    threshold: 0.2,
+  });
+  const heroSubtitleRef = useIntersectionObserver<HTMLParagraphElement>({
+    threshold: 0.2,
+  });
+  const featuresTitleRef = useIntersectionObserver<HTMLHeadingElement>({
+    threshold: 0.2,
+  });
+  const infoTitleRef = useIntersectionObserver<HTMLHeadingElement>({
+    threshold: 0.2,
+  });
+  const infoSubtitleRef = useIntersectionObserver<HTMLParagraphElement>({
+    threshold: 0.2,
+  });
+  const ctaTitleRef = useIntersectionObserver<HTMLHeadingElement>({
+    threshold: 0.2,
+  });
+  const ctaSubtitleRef = useIntersectionObserver<HTMLParagraphElement>({
+    threshold: 0.2,
+  });
+  const contactTitleRef = useIntersectionObserver<HTMLHeadingElement>({
+    threshold: 0.2,
+  });
+  const contactSubtitleRef = useIntersectionObserver<HTMLParagraphElement>({
+    threshold: 0.2,
+  });
+
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
-      const navbarHeight = 64 + 16; // 64 for navbar height and 16 for padding
-      const elementPosition = section.offsetTop - navbarHeight;
+      const screenHeight = window.innerHeight; // 64 for navbar height and 16 for padding
+      const elementPosition = section.offsetTop + screenHeight / 1.1;
       window.scrollTo({
         top: elementPosition,
         behavior: "smooth",
@@ -68,7 +98,7 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-black mx-0 w-full">
+    <main className="flex min-h-screen items-center justify-center bg-black mx-0 w-full bg-black">
       <div className="text-center mx-0 w-full">
         {/* Navbar */}
         <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 bg-black mx-0 px-8 h-16 ">
@@ -95,27 +125,43 @@ export default function LandingPage() {
             </button>
           </div>
         </div>
-        {/* Hero section */}
-        <section
-          className="relative pb-12 mt-16 bg-blue-500"
-          style={{ minHeight: "calc(100vh - 4rem)" }}
-        >
-          {/* overlay video */}
+        {/* Fixed video background */}
+        <div className="fixed inset-0 w-full h-full z-0">
           <video
             src="/landingPage/dna-helix-video.mp4"
+            poster="/landingPage/video-image.png"
             autoPlay
             muted
             loop
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
           />
           {/* video tint */}
-          <div className="absolute inset-0 bg-black opacity-20 z-10"></div>
+          <div className="absolute inset-0 bg-black opacity-20"></div>
+        </div>
 
+        {/* Hero section */}
+        <section
+          className="relative pb-12 mt-16 bg-transparent"
+          style={{ minHeight: "calc(100vh - 4rem)" }}
+        >
           <div className="relative z-20 flex flex-col items-start justify-center h-full text-center px-10 pt-16 max-w-6xl">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 text-left">
+            <h1
+              ref={heroTitleRef.ref}
+              className={`text-5xl md:text-7xl font-bold text-white mb-4 text-left animate-fade-in-up ${
+                heroTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
               {t("hero.title")}
             </h1>
-            <p className="text-xl text-gray-200 mb-4 max-w-4xl text-justify ">
+            <p
+              ref={heroSubtitleRef.ref}
+              className={`text-xl text-gray-200 mb-4 max-w-4xl text-justify animate-fade-in-up ${
+                heroSubtitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+              style={{ transitionDelay: "0.2s" }}
+            >
               {t("hero.subtitle")}
             </p>
             <div className="w-full flex justify-end max-w-4xl">
@@ -127,9 +173,15 @@ export default function LandingPage() {
               </button>
             </div>
           </div>
+          <button
+            onClick={() => scrollToSection("features")}
+            className="absolute bottom-6 right-1/2 transform translate-x-1/2 animate-pulse hover:animate-none hover:opacity-100 transition-opacity duration-1000"
+          >
+            <ArrowDown className="w-10 h-10 text-white" />
+          </button>
         </section>
         {/* <div className="bg-[linear-gradient(180deg,_#07141a_0%,_#07141a_40%,_#5a189a_100%)]"> */}
-        <div className="bg-[#07141a] min-h-screen relative overflow-hidden">
+        <div className="bg-[#07141a] min-h-screen relative overflow-hidden z-10">
           {/* Blob background */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -153,17 +205,33 @@ export default function LandingPage() {
             id="features"
             className="relative mt-0 mb-12 pt-12 px-4 z-10"
           >
-            <h1 className="text-5xl font-bold text-white mb-8 text-center">
+            <h1
+              ref={featuresTitleRef.ref}
+              className={`text-5xl font-bold text-white mb-8 text-center animate-fade-in-up ${
+                featuresTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
               {t("features.title")}
             </h1>
             <FeaturesCarousel />
           </section>
           {/* information section */}
           <section className="relative pb-12 mt-24 z-10">
-            <h1 className="text-5xl font-bold text-white mb-4">
+            <h1
+              ref={infoTitleRef.ref}
+              className={`text-5xl font-bold text-white mb-4 animate-fade-in-up ${
+                infoTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
               {t("info.title")}
             </h1>
-            <p className="text-xl text-gray-200 mb-4 max-w-4xl mx-auto">
+            <p
+              ref={infoSubtitleRef.ref}
+              className={`text-xl text-gray-200 mb-4 max-w-4xl mx-auto animate-fade-in-up ${
+                infoSubtitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+              style={{ transitionDelay: "0.2s" }}
+            >
               {t("info.subtitle")}
             </p>
           </section>
@@ -177,10 +245,21 @@ export default function LandingPage() {
             />
             {/* background overlay */}
             <div className="absolute inset-0 bg-black opacity-30 z-10"></div>
-            <h1 className="relative z-20 text-4xl font-bold text-white mb-4">
+            <h1
+              ref={ctaTitleRef.ref}
+              className={`relative z-20 text-4xl font-bold text-white mb-4 animate-fade-in-up ${
+                ctaTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
               {t("cta.title")}
             </h1>
-            <p className="relative z-20 text-lg text-gray-200 mb-4">
+            <p
+              ref={ctaSubtitleRef.ref}
+              className={`relative z-20 text-lg text-gray-200 mb-4 animate-fade-in-up ${
+                ctaSubtitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+              style={{ transitionDelay: "0.2s" }}
+            >
               {t("cta.subtitle")}
             </p>
             <button
@@ -193,10 +272,21 @@ export default function LandingPage() {
           {/* contact section */}
           <section className="relative pb-12 px-4 pt-12 z-10" id="contact">
             {/* contact form */}
-            <h1 className="text-4xl font-bold text-white mb-3">
+            <h1
+              ref={contactTitleRef.ref}
+              className={`text-4xl font-bold text-white mb-3 animate-fade-in-up ${
+                contactTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
               {t("contact.title")}
             </h1>
-            <p className="text-lg text-gray-200 mb-3">
+            <p
+              ref={contactSubtitleRef.ref}
+              className={`text-lg text-gray-200 mb-3 animate-fade-in-up ${
+                contactSubtitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+              style={{ transitionDelay: "0.2s" }}
+            >
               {t("contact.subtitle")}
             </p>
             <form
