@@ -175,7 +175,7 @@ export default function LandingPage() {
           </div>
           <button
             onClick={() => scrollToSection("features")}
-            className="absolute bottom-6 right-1/2 transform translate-x-1/2 animate-pulse hover:animate-none hover:opacity-100 transition-opacity duration-1000"
+            className="hidden md:block absolute bottom-6 right-1/2 transform translate-x-1/2 animate-pulse hover:animate-none hover:opacity-100 transition-opacity duration-1000"
           >
             <ArrowDown className="w-10 h-10 text-white" />
           </button>
