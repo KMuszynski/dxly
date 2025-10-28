@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const languages = [
-  { code: "EN", name: "English", flag: "🇺🇸" },
-  { code: "PL", name: "Polski", flag: "🇵🇱" },
+  { code: "en", name: "English", flag: "🇺🇸" },
+  { code: "pl", name: "Polski", flag: "🇵🇱" },
 ];
 
 export function LanguageSwitcher() {
@@ -35,7 +35,7 @@ export function LanguageSwitcher() {
           className="flex items-center gap-2 text-gray-200 hover:text-white hover:bg-gray-800 px-3 py-2"
         >
           <span className="">{currentLanguage.flag}</span>
-          <span className="">{currentLanguage.code}</span>
+          <span className="">{currentLanguage.code.toUpperCase()}</span>
           <ChevronDown
             className={`w-4 h-4 transition-transform ${
               isOpen ? "rotate-180" : ""
