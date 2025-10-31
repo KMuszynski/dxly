@@ -1,0 +1,28 @@
+{
+    "login": {
+    "title": "Zaloguj się do swojego konta",
+    "subtitle": "Wprowadź swoją nazwę użytkownika i hasło poniżej, aby zalogować się do swojego konta",
+    "email": "Email",
+    "password": "Hasło",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "sendingReset": "Wysyłanie resetu...",
+    "passwordResetSent": "Email z resetem hasła został wysłany! Sprawdź swoją skrzynkę.",
+    "login": "Zaloguj się",
+    "loggingIn": "Logowanie...",
+    "orContinueWith": "Lub kontynuuj z",
+    "loginWithGitHub": "Zaloguj się z GitHub",
+    "signUp": "Zarejestruj się",
+    "dontHaveAccount": "Nie masz jeszcze konta?",
+    "ok": "OK",
+    "signupNotSupported": "Rejestracja nie jest obsługiwana",
+    "signupNotSupportedDescription": "Obecnie nie obsługujemy samodzielnej rejestracji użytkowników. Skontaktuj się z nami, aby założyć konto."
+},
+"signup": {
+    "title": "Zarejestruj się na koncie",
+    "subtitle": "Wprowadź swoją nazwę użytkownika i hasło poniżej, aby zarejestrować się na koncie",
+    "email": "Email",
+    "password": "Hasło",
+    "signup": "Zarejestruj się",
+    "alreadyHaveAccount": "Masz już konto?"
+}
+}

@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "../../components/language-switcher";
 // 5a189a primary color
 
 export default function LandingPage() {
-  const { t, i18n } = useTranslation("commingSoon");
+  const { t } = useTranslation("commingSoon");
   const router = useRouter();
 
   return (
@@ -24,20 +24,26 @@ export default function LandingPage() {
         </div>
         {/* Hero section */}
         <section
-          className="relative pb-12 mt-16 bg-blue-500"
+          className="relative pb-12 mt-16 bg-black"
           style={{ minHeight: "calc(100vh - 4rem)" }}
         >
-          {/* overlay video */}
-          <video
-            src="/landingPage/dna-helix-video.mp4"
-            autoPlay
-            muted
-            loop
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `
+                radial-gradient(ellipse 400px 300px at 20% 30%, rgba(90, 24, 154, 0.6) 0%, transparent 70%),
+                radial-gradient(ellipse 350px 250px at 80% 20%, rgba(106, 31, 168, 0.5) 0%, transparent 70%),
+                radial-gradient(ellipse 300px 400px at 40% 70%, rgba(74, 16, 132, 0.5) 0%, transparent 70%),
+                radial-gradient(ellipse 450px 300px at 90% 80%, rgba(115, 32, 182, 0.4) 0%, transparent 70%),
+                radial-gradient(ellipse 250px 350px at 10% 90%, rgba(77, 20, 141, 0.5) 0%, transparent 70%),
+                radial-gradient(ellipse 320px 280px at 60% 40%, rgba(90, 24, 154, 0.3) 0%, transparent 70%),
+                radial-gradient(ellipse 280px 320px at 30% 60%, rgba(106, 31, 168, 0.4) 0%, transparent 70%),
+                radial-gradient(ellipse 350px 250px at 70% 10%, rgba(74, 16, 132, 0.3) 0%, transparent 70%)
+              `,
+              filter: "blur(80px)",
+              zIndex: 0,
+            }}
           />
-          {/* video tint */}
-          <div className="absolute inset-0 bg-black opacity-20 z-10"></div>
-
           <div className="relative z-20 flex flex-col items-center justify-center h-full text-center px-10 pt-16">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 text-center">
               {t("body.title")}

@@ -1,0 +1,136 @@
+{
+  "title": "Visits",
+  "subtitle": "View and manage your patient visits",
+  "table": {
+    "patientName": "Patient Name",
+    "visitDate": "Visit Date",
+    "notes": "Notes",
+    "noNotes": "No notes",
+    "unknownPatient": "Unknown Patient",
+    "openMenu": "Open menu",
+    "actions": "Actions",
+    "editVisit": "Edit Visit",
+    "addVisit": "Add Visit",
+    "loading": "Loading visits...",
+    "filterPlaceholder": "Filter by patient name...",
+    "noResults": "No results.",
+    "showing": "Showing {{count}} of {{total}} visit(s)",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "add": {
+    "title": "Add New Visit",
+    "description": "Follow the steps below to create a new patient visit",
+    "stages": {
+      "patient": {
+        "title": "Patient",
+        "searchLabel": "Search for a patient",
+        "searchPlaceholder": "Search by name...",
+        "addNew": "Add New Patient",
+        "loading": "Loading patients...",
+        "noResults": "No patients found",
+        "noPatients": "No patients available"
+      },
+      "symptoms": {
+        "title": "Symptoms",
+        "add": "Add Symptom",
+        "noSymptoms": "No symptoms added yet",
+        "symptom": "Symptom",
+        "symptomLabel": "Symptom",
+        "symptomPlaceholder": "Enter symptom description",
+        "durationLabel": "Duration",
+        "durationPlaceholder": "e.g., 3 days, 2 weeks",
+        "notesLabel": "Notes",
+        "notesPlaceholder": "Additional notes about this symptom"
+      },
+      "diagnosis": {
+        "title": "Diagnosis",
+        "add": "Add Diagnosis",
+        "noDiagnoses": "No diagnoses added yet",
+        "diagnosis": "Diagnosis",
+        "diagnosisLabel": "Diagnosis",
+        "diagnosisPlaceholder": "Enter diagnosis"
+      },
+      "diagnosisDetails": {
+        "title": "Details",
+        "noDiagnoses": "No diagnoses to add details for",
+        "diagnosis": "Diagnosis",
+        "notesLabel": "Notes",
+        "notesPlaceholder": "Add notes or details about this diagnosis"
+      },
+      "notes": {
+        "title": "Notes",
+        "visitDate": "Visit Date",
+        "visitTime": "Visit Time",
+        "notesLabel": "Visit Notes",
+        "notesPlaceholder": "Enter general notes about this visit..."
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "previous": "Previous",
+      "next": "Next",
+      "saving": "Saving...",
+      "complete": "Complete Visit"
+    },
+    "errors": {
+      "patientRequired": "Please select a patient",
+      "sessionRequired": "Session expired. Please log in again.",
+      "visitFailed": "Failed to create visit. Please try again.",
+      "symptomsFailed": "Failed to add symptoms. Please try again.",
+      "diagnosesFailed": "Failed to add diagnoses. Please try again.",
+      "saveError": "An error occurred while saving the visit"
+    },
+    "success": {
+      "visitAdded": "Visit created successfully"
+    }
+  },
+  "edit": {
+    "title": "Edit Visit",
+    "description": "View and update visit information. Required fields are marked with an asterisk (*).",
+    "fields": {
+      "patient": "Patient",
+      "visitDate": "Visit Date",
+      "visitTime": "Visit Time",
+      "notes": "Visit Notes",
+      "symptoms": "Symptoms",
+      "diagnoses": "Diagnoses"
+    },
+    "placeholders": {
+      "notes": "Enter visit notes..."
+    },
+    "sections": {
+      "basicInfo": "Basic Information",
+      "symptoms": "Symptoms",
+      "diagnoses": "Diagnoses",
+      "visitNotes": "Visit Notes"
+    },
+    "symptoms": {
+      "title": "Symptom",
+      "duration": "Duration",
+      "notes": "Notes",
+      "noSymptoms": "No symptoms recorded"
+    },
+    "diagnoses": {
+      "title": "Diagnosis",
+      "notes": "Notes",
+      "noDiagnoses": "No diagnoses recorded"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes"
+    },
+    "errors": {
+      "visitDateRequired": "Visit date is required",
+      "visitTimeRequired": "Visit time is required",
+      "updateFailed": "Failed to update visit. Please try again.",
+      "saveError": "An error occurred while saving the visit",
+      "fetchFailed": "Failed to load visit details. Please try again."
+    },
+    "success": {
+      "visitUpdated": "Visit updated successfully"
+    }
+  }
+}
+

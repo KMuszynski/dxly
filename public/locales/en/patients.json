@@ -1,0 +1,101 @@
+{
+  "title": "Patients",
+  "subtitle": "Manage your patients and their information",
+  "table": {
+    "patientName": "Patient Name",
+    "openMenu": "Open menu",
+    "actions": "Actions",
+    "editPatient": "Edit Patient",
+    "addPatient": "Add Patient",
+    "loading": "Loading patients...",
+    "filterPlaceholder": "Filter by patient name...",
+    "noResults": "No results.",
+    "showing": "Showing {{count}} of {{total}} patient(s)",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "add": {
+    "title": "Add New Patient",
+    "description": "Enter patient information. Required fields are marked with an asterisk (*).",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    },
+    "placeholders": {
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "phone": "Enter phone number",
+      "email": "Enter email address",
+      "address": "Enter address"
+    },
+    "gender": {
+      "unknown": "Unknown",
+      "female": "Female",
+      "male": "Male",
+      "other": "Other"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saving": "Adding...",
+      "addPatient": "Add Patient"
+    },
+    "errors": {
+      "firstNameLastNameRequired": "First name and last name are required",
+      "dateOfBirthRequired": "Date of birth is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number",
+      "addFailed": "Failed to add patient. Please try again.",
+      "saveError": "An error occurred while adding the patient"
+    },
+    "success": {
+      "patientAdded": "Patient added successfully"
+    }
+  },
+  "edit": {
+    "title": "Edit Patient",
+    "description": "Update patient information. Required fields are marked with an asterisk (*).",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    },
+    "placeholders": {
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "phone": "Enter phone number",
+      "email": "Enter email address",
+      "address": "Enter address"
+    },
+    "gender": {
+      "unknown": "Unknown",
+      "female": "Female",
+      "male": "Male",
+      "other": "Other"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes"
+    },
+    "errors": {
+      "firstNameLastNameRequired": "First name and last name are required",
+      "dateOfBirthRequired": "Date of birth is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number",
+      "updateFailed": "Failed to update patient. Please try again.",
+      "saveError": "An error occurred while saving the patient"
+    },
+    "success": {
+      "patientUpdated": "Patient updated successfully"
+    }
+  }
+}

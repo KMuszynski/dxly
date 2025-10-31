@@ -1,0 +1,136 @@
+{
+  "title": "Wizyty",
+  "subtitle": "Przeglądaj i zarządzaj wizytami pacjentów",
+  "table": {
+    "patientName": "Imię i nazwisko pacjenta",
+    "visitDate": "Data wizyty",
+    "notes": "Notatki",
+    "noNotes": "Brak notatek",
+    "unknownPatient": "Nieznany pacjent",
+    "openMenu": "Otwórz menu",
+    "actions": "Akcje",
+    "editVisit": "Edytuj wizytę",
+    "addVisit": "Dodaj wizytę",
+    "loading": "Ładowanie wizyt...",
+    "filterPlaceholder": "Filtruj po imieniu pacjenta...",
+    "noResults": "Brak wyników.",
+    "showing": "Wyświetlanie {{count}} z {{total}} wizyty(t)",
+    "previous": "Poprzednia",
+    "next": "Następna"
+  },
+  "add": {
+    "title": "Dodaj nową wizytę",
+    "description": "Postępuj zgodnie z krokami poniżej, aby utworzyć nową wizytę pacjenta",
+    "stages": {
+      "patient": {
+        "title": "Pacjent",
+        "searchLabel": "Wyszukaj pacjenta",
+        "searchPlaceholder": "Wyszukaj po imieniu...",
+        "addNew": "Dodaj nowego pacjenta",
+        "loading": "Ładowanie pacjentów...",
+        "noResults": "Nie znaleziono pacjentów",
+        "noPatients": "Brak dostępnych pacjentów"
+      },
+      "symptoms": {
+        "title": "Objawy",
+        "add": "Dodaj objaw",
+        "noSymptoms": "Brak dodanych objawów",
+        "symptom": "Objaw",
+        "symptomLabel": "Objaw",
+        "symptomPlaceholder": "Wprowadź opis objawu",
+        "durationLabel": "Czas trwania",
+        "durationPlaceholder": "np. 3 dni, 2 tygodnie",
+        "notesLabel": "Notatki",
+        "notesPlaceholder": "Dodatkowe notatki o tym objawie"
+      },
+      "diagnosis": {
+        "title": "Diagnoza",
+        "add": "Dodaj diagnozę",
+        "noDiagnoses": "Brak dodanych diagnoz",
+        "diagnosis": "Diagnoza",
+        "diagnosisLabel": "Diagnoza",
+        "diagnosisPlaceholder": "Wprowadź diagnozę"
+      },
+      "diagnosisDetails": {
+        "title": "Szczegóły",
+        "noDiagnoses": "Brak diagnoz do dodania szczegółów",
+        "diagnosis": "Diagnoza",
+        "notesLabel": "Notatki",
+        "notesPlaceholder": "Dodaj notatki lub szczegóły dotyczące tej diagnozy"
+      },
+      "notes": {
+        "title": "Notatki",
+        "visitDate": "Data wizyty",
+        "visitTime": "Godzina wizyty",
+        "notesLabel": "Notatki z wizyty",
+        "notesPlaceholder": "Wprowadź ogólne notatki o tej wizycie..."
+      }
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "previous": "Poprzednia",
+      "next": "Dalej",
+      "saving": "Zapisywanie...",
+      "complete": "Zakończ wizytę"
+    },
+    "errors": {
+      "patientRequired": "Proszę wybrać pacjenta",
+      "sessionRequired": "Sesja wygasła. Proszę zalogować się ponownie.",
+      "visitFailed": "Nie udało się utworzyć wizyty. Spróbuj ponownie.",
+      "symptomsFailed": "Nie udało się dodać objawów. Spróbuj ponownie.",
+      "diagnosesFailed": "Nie udało się dodać diagnoz. Spróbuj ponownie.",
+      "saveError": "Wystąpił błąd podczas zapisywania wizyty"
+    },
+    "success": {
+      "visitAdded": "Wizyta została pomyślnie utworzona"
+    }
+  },
+  "edit": {
+    "title": "Edytuj wizytę",
+    "description": "Przeglądaj i aktualizuj informacje o wizycie. Pola wymagane są oznaczone gwiazdką (*).",
+    "fields": {
+      "patient": "Pacjent",
+      "visitDate": "Data wizyty",
+      "visitTime": "Godzina wizyty",
+      "notes": "Notatki z wizyty",
+      "symptoms": "Objawy",
+      "diagnoses": "Diagnozy"
+    },
+    "placeholders": {
+      "notes": "Wprowadź notatki z wizyty..."
+    },
+    "sections": {
+      "basicInfo": "Podstawowe informacje",
+      "symptoms": "Objawy",
+      "diagnoses": "Diagnozy",
+      "visitNotes": "Notatki z wizyty"
+    },
+    "symptoms": {
+      "title": "Objaw",
+      "duration": "Czas trwania",
+      "notes": "Notatki",
+      "noSymptoms": "Brak zarejestrowanych objawów"
+    },
+    "diagnoses": {
+      "title": "Diagnoza",
+      "notes": "Notatki",
+      "noDiagnoses": "Brak zarejestrowanych diagnoz"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "saving": "Zapisywanie...",
+      "saveChanges": "Zapisz zmiany"
+    },
+    "errors": {
+      "visitDateRequired": "Data wizyty jest wymagana",
+      "visitTimeRequired": "Godzina wizyty jest wymagana",
+      "updateFailed": "Nie udało się zaktualizować wizyty. Spróbuj ponownie.",
+      "saveError": "Wystąpił błąd podczas zapisywania wizyty",
+      "fetchFailed": "Nie udało się załadować szczegółów wizyty. Spróbuj ponownie."
+    },
+    "success": {
+      "visitUpdated": "Wizyta została pomyślnie zaktualizowana"
+    }
+  }
+}
+

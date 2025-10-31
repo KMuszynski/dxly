@@ -1,0 +1,42 @@
+{
+  "title": "Ustawienia",
+  "subtitle": "Zarządzaj ustawieniami konta i preferencjami",
+  "profile": {
+    "title": "Informacje profilu",
+    "description": "Zaktualizuj swoje dane osobowe i zdjęcie profilowe",
+    "profilePicture": "Zdjęcie profilowe",
+    "selected": "Wybrano",
+    "name": "Imię",
+    "namePlaceholder": "Wprowadź swoje imię",
+    "surname": "Nazwisko",
+    "surnamePlaceholder": "Wprowadź swoje nazwisko",
+    "role": "Rola",
+    "rolePlaceholder": "nie wykryto typu",
+    "roleHelp": "Aby zmienić swoją rolę, skontaktuj się z pomocą techniczną.",
+    "specialization": "Specjalizacja",
+    "specializationPlaceholder": "np. Kardiologia, Pediatria, itp.",
+    "email": "Email",
+    "emailHelp": "Aby zmienić swój email, skontaktuj się z pomocą techniczną.",
+    "saveChanges": "Zapisz zmiany",
+    "saving": "Zapisywanie..."
+  },
+  "account": {
+    "title": "Akcje konta",
+    "description": "Zarządzaj bezpieczeństwem konta i sesją",
+    "resetPassword": "Zresetuj hasło",
+    "logout": "Wyloguj się"
+  },
+  "messages": {
+    "loading": "Ładowanie...",
+    "errorLoading": "Błąd ładowania danych użytkownika",
+    "fileTypeError": "Proszę wybrać plik graficzny",
+    "fileSizeError": "Rozmiar pliku musi być mniejszy niż 5MB",
+    "uploadError": "Nie udało się przesłać zdjęcia profilowego. Spróbuj ponownie.",
+    "updateError": "Nie udało się zaktualizować profilu. Spróbuj ponownie.",
+    "updateSuccess": "Profil został pomyślnie zaktualizowany!",
+    "saveError": "Wystąpił błąd. Spróbuj ponownie.",
+    "resetPasswordError": "Nie udało się wysłać emaila z resetem hasła. Spróbuj ponownie.",
+    "resetPasswordSuccess": "Email z resetem hasła został wysłany! Sprawdź swoją skrzynkę odbiorczą."
+  }
+}
+

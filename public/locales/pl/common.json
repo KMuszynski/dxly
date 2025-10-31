@@ -35,7 +35,7 @@
   "cta": {
     "title": "Uzyskaj wczesny dostęp",
     "subtitle": "Bądź wśród pierwszych, którzy zautomatyzują swoją pracę kliniczną dzięki AI.",
-    "button": "Dołącz do listy oczekujących"
+    "button": "Zaczynamy"
   },
   "contact": {
     "title": "Skontaktuj się",
@@ -50,5 +50,11 @@
     "sending": "Wysyłanie...",
     "successMessage": "Dziękujemy! Twoja wiadomość została wysłana pomyślnie.",
     "errorMessage": "Przepraszamy, wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie."
+  },
+  "breadcrumb": {
+    "dashboard": "Pulpit",
+    "settings": "Ustawienia",
+    "patients": "Pacjenci",
+    "visits": "Wizyty"
   }
 }

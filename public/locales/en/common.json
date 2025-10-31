@@ -35,7 +35,7 @@
   "cta": {
     "title": "Get early access",
     "subtitle": "Be among the first to streamline your clinical workflow with AI.",
-    "button": "Join the waitlist"
+    "button": "Get started"
   },
   "contact": {
     "title": "Get in Touch",
@@ -50,5 +50,11 @@
     "sending": "Sending...",
     "successMessage": "Thank you! Your message has been sent successfully.",
     "errorMessage": "Sorry, there was an error sending your message. Please try again."
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "patients": "Patients",
+    "visits": "Visits"
   }
 }

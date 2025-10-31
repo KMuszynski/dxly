@@ -1,0 +1,42 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account settings and preferences",
+  "profile": {
+    "title": "Profile Information",
+    "description": "Update your personal information and profile picture",
+    "profilePicture": "Profile Picture",
+    "selected": "Selected",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "surname": "Surname",
+    "surnamePlaceholder": "Enter your surname",
+    "role": "Role",
+    "rolePlaceholder": "no type detected",
+    "roleHelp": "To change your role, please contact support.",
+    "specialization": "Specialization",
+    "specializationPlaceholder": "e.g., Cardiology, Pediatrics, etc.",
+    "email": "Email",
+    "emailHelp": "To change your email, please contact support.",
+    "saveChanges": "Save Changes",
+    "saving": "Saving..."
+  },
+  "account": {
+    "title": "Account Actions",
+    "description": "Manage your account security and session",
+    "resetPassword": "Reset Password",
+    "logout": "Logout"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "errorLoading": "Error loading user data",
+    "fileTypeError": "Please select an image file",
+    "fileSizeError": "File size must be less than 5MB",
+    "uploadError": "Failed to upload profile picture. Please try again.",
+    "updateError": "Failed to update profile. Please try again.",
+    "updateSuccess": "Profile updated successfully!",
+    "saveError": "An error occurred. Please try again.",
+    "resetPasswordError": "Failed to send password reset email. Please try again.",
+    "resetPasswordSuccess": "Password reset email sent! Please check your inbox."
+  }
+}
+

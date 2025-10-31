@@ -1,0 +1,101 @@
+{
+  "title": "Pacjenci",
+  "subtitle": "Zarządzaj pacjentami i ich informacjami",
+  "table": {
+    "patientName": "Imię i nazwisko",
+    "openMenu": "Otwórz menu",
+    "actions": "Akcje",
+    "editPatient": "Edytuj pacjenta",
+    "addPatient": "Dodaj pacjenta",
+    "loading": "Ładowanie pacjentów...",
+    "filterPlaceholder": "Filtruj po imieniu pacjenta...",
+    "noResults": "Brak wyników.",
+    "showing": "Wyświetlanie {{count}} z {{total}} pacjent(ów)",
+    "previous": "Poprzednia",
+    "next": "Następna"
+  },
+  "add": {
+    "title": "Dodaj nowego pacjenta",
+    "description": "Wprowadź informacje o pacjencie. Pola wymagane są oznaczone gwiazdką (*).",
+    "fields": {
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "dateOfBirth": "Data urodzenia",
+      "gender": "Płeć",
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Adres"
+    },
+    "placeholders": {
+      "firstName": "Wprowadź imię",
+      "lastName": "Wprowadź nazwisko",
+      "phone": "Wprowadź numer telefonu",
+      "email": "Wprowadź adres email",
+      "address": "Wprowadź adres"
+    },
+    "gender": {
+      "unknown": "Nieznana",
+      "female": "Kobieta",
+      "male": "Mężczyzna",
+      "other": "Inna"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "saving": "Dodawanie...",
+      "addPatient": "Dodaj pacjenta"
+    },
+    "errors": {
+      "firstNameLastNameRequired": "Imię i nazwisko są wymagane",
+      "dateOfBirthRequired": "Data urodzenia jest wymagana",
+      "invalidEmail": "Wprowadź poprawny adres email",
+      "invalidPhone": "Wprowadź poprawny numer telefonu",
+      "addFailed": "Nie udało się dodać pacjenta. Spróbuj ponownie.",
+      "saveError": "Wystąpił błąd podczas dodawania pacjenta"
+    },
+    "success": {
+      "patientAdded": "Pacjent został pomyślnie dodany"
+    }
+  },
+  "edit": {
+    "title": "Edytuj pacjenta",
+    "description": "Zaktualizuj informacje o pacjencie. Pola wymagane są oznaczone gwiazdką (*).",
+    "fields": {
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "dateOfBirth": "Data urodzenia",
+      "gender": "Płeć",
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Adres"
+    },
+    "placeholders": {
+      "firstName": "Wprowadź imię",
+      "lastName": "Wprowadź nazwisko",
+      "phone": "Wprowadź numer telefonu",
+      "email": "Wprowadź adres email",
+      "address": "Wprowadź adres"
+    },
+    "gender": {
+      "unknown": "Nieznana",
+      "female": "Kobieta",
+      "male": "Mężczyzna",
+      "other": "Inna"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "saving": "Zapisywanie...",
+      "saveChanges": "Zapisz zmiany"
+    },
+    "errors": {
+      "firstNameLastNameRequired": "Imię i nazwisko są wymagane",
+      "dateOfBirthRequired": "Data urodzenia jest wymagana",
+      "invalidEmail": "Wprowadź poprawny adres email",
+      "invalidPhone": "Wprowadź poprawny numer telefonu",
+      "updateFailed": "Nie udało się zaktualizować pacjenta. Spróbuj ponownie.",
+      "saveError": "Wystąpił błąd podczas zapisywania pacjenta"
+    },
+    "success": {
+      "patientUpdated": "Pacjent został pomyślnie zaktualizowany"
+    }
+  }
+}
