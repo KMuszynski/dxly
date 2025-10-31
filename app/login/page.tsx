@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
@@ -26,7 +27,9 @@ export default function Login() {
         className="absolute z-0 inset-0 w-full h-full object-cover"
       />
       <div className="px-8 py-10 rounded-lg border border-gray-200 shadow-lg bg-white relative z-10 flex flex-col items-center justify-center w-fit">
-        <LoginForm className="w-full max-w-sm" />
+        <Suspense fallback={<div className="w-full max-w-sm">Loading...</div>}>
+          <LoginForm className="w-full max-w-sm" />
+        </Suspense>
       </div>
     </div>
   );
