@@ -12,7 +12,7 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
 
@@ -34,15 +34,34 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 import { EditVisitDialog } from "./edit-visit";
 import { AddVisitDialog } from "./add-visit";
-import { Plus } from "lucide-react";
+import { ScheduleVisitDialog } from "./schedule-visit";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Plus,
+  CalendarPlus,
+  Play,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  AlertTriangle,
+} from "lucide-react";
 
 export type Visit = {
   id: string;
   patient_id: string;
   doctor_id: string;
   visit_date: string;
+  status?: string; // scheduled, checked_in, in_progress, completed, cancelled
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -50,10 +69,19 @@ export type Visit = {
   patient?: {
     first_name: string;
     last_name: string;
+    pesel: string | null;
   };
+  // Symptom count for display
+  symptom_count?: number;
 };
 
-export function VisitsDataTable() {
+interface VisitsDataTableProps {
+  autoOpenAddDialog?: boolean;
+}
+
+export function VisitsDataTable({
+  autoOpenAddDialog = false,
+}: VisitsDataTableProps) {
   const { t } = useTranslation("visits");
   const [data, setData] = React.useState<Visit[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -63,9 +91,12 @@ export function VisitsDataTable() {
   );
   const [editDialogOpen, setEditDialogOpen] = React.useState(false);
   const [addDialogOpen, setAddDialogOpen] = React.useState(false);
-  const [selectedVisit, setSelectedVisit] = React.useState<Visit | null>(
-    null
-  );
+  const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [visitToDelete, setVisitToDelete] = React.useState<Visit | null>(null);
+  const [deleting, setDeleting] = React.useState(false);
+  const [selectedVisit, setSelectedVisit] = React.useState<Visit | null>(null);
+  const [userType, setUserType] = React.useState<string | null>(null);
 
   const fetchVisits = React.useCallback(async () => {
     try {
@@ -78,18 +109,37 @@ export function VisitsDataTable() {
         return;
       }
 
-      // Fetch visits for the logged-in doctor with patient data
-      const { data: visits, error } = await supabase
+      // Fetch user type to determine query scope
+      const { data: userProfile } = await supabase
+        .from("users")
+        .select("type")
+        .eq("user_id", session.user.id)
+        .single();
+
+      setUserType(userProfile?.type || null);
+
+      // Build the query based on user type
+      let query = supabase
         .from("visits")
-        .select(`
+        .select(
+          `
           *,
           patients!inner(
             first_name,
-            last_name
+            last_name,
+            pesel
           )
-        `)
-        .eq("doctor_id", session.user.id)
+        `
+        )
         .order("visit_date", { ascending: false });
+
+      // Doctors see only their own visits, assistants see all visits
+      if (userProfile?.type === "doctor") {
+        query = query.eq("doctor_id", session.user.id);
+      }
+      // Assistants see all visits (no filter)
+
+      const { data: visits, error } = await query;
 
       if (error) {
         console.error("Error fetching visits:", error);
@@ -100,16 +150,17 @@ export function VisitsDataTable() {
       // Note: Supabase returns the related table as an array, but with inner join it should be a single object
       const transformedVisits =
         visits?.map((visit: any) => {
-          const patientData = Array.isArray(visit.patients) 
-            ? visit.patients[0] 
+          const patientData = Array.isArray(visit.patients)
+            ? visit.patients[0]
             : visit.patients;
-          
+
           return {
             ...visit,
             patient: patientData
               ? {
                   first_name: patientData.first_name,
                   last_name: patientData.last_name,
+                  pesel: patientData.pesel,
                 }
               : undefined,
           };
@@ -127,10 +178,80 @@ export function VisitsDataTable() {
     fetchVisits();
   }, [fetchVisits]);
 
+  // Auto-open add dialog if prop is set
+  React.useEffect(() => {
+    if (autoOpenAddDialog) {
+      setAddDialogOpen(true);
+    }
+  }, [autoOpenAddDialog]);
+
   const handleEditVisit = React.useCallback((visit: Visit) => {
     setSelectedVisit(visit);
     setEditDialogOpen(true);
   }, []);
+
+  const handleStartVisit = React.useCallback(
+    async (visit: Visit) => {
+      // Update status to in_progress (if not already) and open the add-visit dialog
+      try {
+        // Only update status if not already in_progress
+        if (visit.status !== "in_progress") {
+          await supabase
+            .from("visits")
+            .update({ status: "in_progress" })
+            .eq("id", visit.id);
+        }
+
+        // Open the add dialog with the visit data pre-filled
+        setSelectedVisit({ ...visit, status: "in_progress" });
+        setAddDialogOpen(true);
+        fetchVisits();
+      } catch (error) {
+        console.error("Error starting visit:", error);
+      }
+    },
+    [fetchVisits]
+  );
+
+  const handleDeleteVisit = React.useCallback((visit: Visit) => {
+    setVisitToDelete(visit);
+    setDeleteDialogOpen(true);
+  }, []);
+
+  const confirmDeleteVisit = React.useCallback(async () => {
+    if (!visitToDelete) return;
+
+    setDeleting(true);
+    try {
+      // First delete related records (symptoms and diagnoses)
+      await supabase
+        .from("visit_symptoms")
+        .delete()
+        .eq("visit_id", visitToDelete.id);
+      await supabase
+        .from("visit_diagnoses")
+        .delete()
+        .eq("visit_id", visitToDelete.id);
+
+      // Then delete the visit
+      const { error } = await supabase
+        .from("visits")
+        .delete()
+        .eq("id", visitToDelete.id);
+
+      if (error) throw error;
+
+      toast.success(t("table.visitDeleted", "Visit deleted successfully"));
+      setDeleteDialogOpen(false);
+      setVisitToDelete(null);
+      fetchVisits();
+    } catch (error) {
+      console.error("Error deleting visit:", error);
+      toast.error(t("table.deleteError", "Failed to delete visit"));
+    } finally {
+      setDeleting(false);
+    }
+  }, [visitToDelete, fetchVisits, t]);
 
   const handleVisitUpdated = () => {
     fetchVisits();
@@ -173,6 +294,31 @@ export function VisitsDataTable() {
             : "",
       },
       {
+        accessorKey: "patientPesel",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              {t("table.patientPesel")}
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          const visit = row.original;
+          return (
+            <div className="text-muted-foreground">
+              {visit.patient?.pesel || "—"}
+            </div>
+          );
+        },
+        accessorFn: (row) => row.patient?.pesel || "",
+      },
+      {
         accessorKey: "visit_date",
         header: ({ column }) => {
           return (
@@ -191,8 +337,63 @@ export function VisitsDataTable() {
           const visitDate = new Date(row.getValue("visit_date"));
           return (
             <div>
-              {visitDate.toLocaleDateString()} {visitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {visitDate.toLocaleDateString()}{" "}
+              {visitDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </div>
+          );
+        },
+      },
+      {
+        accessorKey: "status",
+        header: () => <div>{t("table.status", "Status")}</div>,
+        cell: ({ row }) => {
+          const status = row.original.status || "scheduled";
+          const statusConfig: Record<
+            string,
+            { icon: React.ReactNode; label: string; className: string }
+          > = {
+            scheduled: {
+              icon: <Clock className="h-3 w-3" />,
+              label: t("status.scheduled", "Scheduled"),
+              className:
+                "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+            },
+            checked_in: {
+              icon: <AlertCircle className="h-3 w-3" />,
+              label: t("status.checkedIn", "Checked In"),
+              className:
+                "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
+            },
+            in_progress: {
+              icon: <Play className="h-3 w-3" />,
+              label: t("status.inProgress", "In Progress"),
+              className:
+                "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+            },
+            completed: {
+              icon: <CheckCircle2 className="h-3 w-3" />,
+              label: t("status.completed", "Completed"),
+              className:
+                "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+            },
+            cancelled: {
+              icon: <AlertCircle className="h-3 w-3" />,
+              label: t("status.cancelled", "Cancelled"),
+              className:
+                "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+            },
+          };
+          const config = statusConfig[status] || statusConfig.scheduled;
+          return (
+            <span
+              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${config.className}`}
+            >
+              {config.icon}
+              {config.label}
+            </span>
           );
         },
       },
@@ -203,7 +404,11 @@ export function VisitsDataTable() {
           const notes = row.getValue("notes") as string | null;
           return (
             <div className="max-w-[300px] truncate">
-              {notes || <span className="text-muted-foreground">{t("table.noNotes")}</span>}
+              {notes || (
+                <span className="text-muted-foreground">
+                  {t("table.noNotes")}
+                </span>
+              )}
             </div>
           );
         },
@@ -214,6 +419,20 @@ export function VisitsDataTable() {
         header: () => <div className="text-right"></div>,
         cell: ({ row }) => {
           const visit = row.original;
+          const status = visit.status || "scheduled";
+          const canStartVisit =
+            userType === "doctor" &&
+            (status === "scheduled" ||
+              status === "checked_in" ||
+              status === "in_progress");
+          const canEditVisit = userType === "doctor";
+
+          // Doctors can delete all visits
+          // Assistants can only delete scheduled, checked_in, or cancelled visits
+          const canDelete =
+            userType === "doctor" ||
+            (userType === "assistant" &&
+              ["scheduled", "checked_in", "cancelled"].includes(status));
 
           return (
             <div className="text-right">
@@ -226,10 +445,29 @@ export function VisitsDataTable() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{t("table.actions")}</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleEditVisit(visit)}>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    {t("table.editVisit")}
-                  </DropdownMenuItem>
+                  {canStartVisit && (
+                    <DropdownMenuItem onClick={() => handleStartVisit(visit)}>
+                      <Play className="mr-2 h-4 w-4" />
+                      {status === "in_progress"
+                        ? t("table.continueVisit", "Continue Visit")
+                        : t("table.startVisit", "Start Visit")}
+                    </DropdownMenuItem>
+                  )}
+                  {canEditVisit && (
+                    <DropdownMenuItem onClick={() => handleEditVisit(visit)}>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      {t("table.editVisit")}
+                    </DropdownMenuItem>
+                  )}
+                  {canDelete && (
+                    <DropdownMenuItem
+                      onClick={() => handleDeleteVisit(visit)}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      {t("table.deleteVisit", "Delete Visit")}
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -237,21 +475,35 @@ export function VisitsDataTable() {
         },
       },
     ],
-    [t, handleEditVisit]
+    [t, handleEditVisit, handleStartVisit, handleDeleteVisit, userType]
   );
+
+  const [globalFilter, setGlobalFilter] = React.useState("");
 
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, columnId, filterValue) => {
+      const visit = row.original;
+      const searchValue = filterValue.toLowerCase();
+      const patientName = visit.patient
+        ? `${visit.patient.first_name} ${visit.patient.last_name}`.toLowerCase()
+        : "";
+      const pesel = (visit.patient?.pesel || "").toLowerCase();
+
+      return patientName.includes(searchValue) || pesel.includes(searchValue);
+    },
     state: {
       sorting,
       columnFilters,
+      globalFilter,
     },
   });
 
@@ -270,18 +522,27 @@ export function VisitsDataTable() {
       <div className="flex items-center justify-between py-4">
         <Input
           placeholder={t("table.filterPlaceholder")}
-          value={(table.getColumn("patientName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("patientName")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm bg-white"
         />
-        <Button onClick={() => setAddDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          {t("table.addVisit")}
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setScheduleDialogOpen(true)}>
+            <CalendarPlus className="mr-2 h-4 w-4" />
+            {t("table.scheduleVisit", "Schedule Visit")}
+          </Button>
+          {userType === "doctor" && (
+            <Button
+              onClick={() => setAddDialogOpen(true)}
+              className="bg-brand text-white hover:!bg-brand hover:brightness-125"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              {t("table.addVisit")}
+            </Button>
+          )}
+        </div>
       </div>
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-md border bg-white">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -363,10 +624,73 @@ export function VisitsDataTable() {
       />
       <AddVisitDialog
         open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
+        onOpenChange={(open) => {
+          setAddDialogOpen(open);
+          if (!open) setSelectedVisit(null); // Clear selection when closing
+        }}
         onVisitAdded={handleVisitAdded}
+        existingVisit={selectedVisit}
       />
+      <ScheduleVisitDialog
+        open={scheduleDialogOpen}
+        onOpenChange={setScheduleDialogOpen}
+        onVisitScheduled={handleVisitAdded}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10">
+                <AlertTriangle className="h-5 w-5 text-destructive" />
+              </div>
+              <div>
+                <DialogTitle>{t("table.deleteVisit")}</DialogTitle>
+                <DialogDescription className="mt-1">
+                  {t("table.confirmDelete")}
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          {visitToDelete && (
+            <div className="py-4">
+              <div className="rounded-md bg-muted p-3 text-sm">
+                <p className="font-medium">
+                  {visitToDelete.patient
+                    ? `${visitToDelete.patient.first_name} ${visitToDelete.patient.last_name}`
+                    : t("table.unknownPatient")}
+                </p>
+                <p className="text-muted-foreground">
+                  {new Date(visitToDelete.visit_date).toLocaleDateString()}{" "}
+                  {new Date(visitToDelete.visit_date).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            </div>
+          )}
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={deleting}
+            >
+              {t("add.buttons.cancel", "Cancel")}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDeleteVisit}
+              disabled={deleting}
+            >
+              {deleting
+                ? t("table.deleting", "Deleting...")
+                : t("table.deleteVisit")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
-

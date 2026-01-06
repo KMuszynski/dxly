@@ -23,9 +23,20 @@ interface UserProfile {
   name: string;
   surname: string;
   full_name: string;
-  type: "doctor" | "assistant";
+  type: "doctor" | "assistant" | "patient";
   specialization?: string;
   profile_picture?: string;
+}
+
+interface PatientRecord {
+  id: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  gender: string;
+  phone?: string;
+  address?: string;
+  pesel?: string;
 }
 
 export default function Settings() {
@@ -44,6 +55,14 @@ export default function Settings() {
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Patient-specific state
+  const [patientRecord, setPatientRecord] = useState<PatientRecord | null>(null);
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [pesel, setPesel] = useState("");
 
   useEffect(() => {
     const getUser = async () => {
@@ -67,6 +86,24 @@ export default function Settings() {
           setSurname(userProfile.surname || "");
           setSpecialization(userProfile.specialization || "");
           setProfilePictureUrl(userProfile.profile_picture || "");
+
+          // Fetch patient record if user is a patient
+          if (userProfile.type === "patient") {
+            const { data: patient } = await supabase
+              .from("patients")
+              .select("*")
+              .eq("user_id", session.user.id)
+              .single();
+
+            if (patient) {
+              setPatientRecord(patient);
+              setDateOfBirth(patient.date_of_birth || "");
+              setGender(patient.gender || "");
+              setPhone(patient.phone || "");
+              setAddress(patient.address || "");
+              setPesel(patient.pesel || "");
+            }
+          }
         }
       } else {
         router.push("/login");
@@ -228,33 +265,56 @@ export default function Settings() {
       if (error) {
         console.error("Update error:", error);
         toast.error(t("messages.updateError"));
-      } else {
-        toast.success(t("messages.updateSuccess"));
+        return;
+      }
 
-        // Refresh profile and reset form
-        const { data: userProfile } = await supabase
-          .from("users")
-          .select("*")
-          .eq("user_id", user.id)
-          .single();
+      // Update patient record if user is a patient
+      if (profile.type === "patient" && patientRecord) {
+        const { error: patientError } = await supabase
+          .from("patients")
+          .update({
+            first_name: name,
+            last_name: surname,
+            date_of_birth: dateOfBirth || null,
+            gender: gender || "unknown",
+            phone: phone || null,
+            address: address || null,
+            pesel: pesel || null,
+          })
+          .eq("id", patientRecord.id);
 
-        if (userProfile) {
-          // Update profile state
-          setProfile(userProfile);
+        if (patientError) {
+          console.error("Patient update error:", patientError);
+          toast.error(t("messages.updateError"));
+          return;
+        }
+      }
 
-          // Reset form fields with saved values
-          setName(userProfile.name || "");
-          setSurname(userProfile.surname || "");
-          setSpecialization(userProfile.specialization || "");
+      toast.success(t("messages.updateSuccess"));
 
-          // Reset profile picture state
-          setProfilePicture(null);
-          setProfilePictureUrl(userProfile.profile_picture || "");
+      // Refresh profile and reset form
+      const { data: userProfile } = await supabase
+        .from("users")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
 
-          // Reset file input
-          if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-          }
+      if (userProfile) {
+        // Update profile state
+        setProfile(userProfile);
+
+        // Reset form fields with saved values
+        setName(userProfile.name || "");
+        setSurname(userProfile.surname || "");
+        setSpecialization(userProfile.specialization || "");
+
+        // Reset profile picture state
+        setProfilePicture(null);
+        setProfilePictureUrl(userProfile.profile_picture || "");
+
+        // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
         }
       }
     } catch (error) {
@@ -408,6 +468,79 @@ export default function Settings() {
                 placeholder={t("profile.specializationPlaceholder")}
               />
             </div>
+          )}
+
+          {/* Patient-specific fields */}
+          {profile.type === "patient" && (
+            <>
+              <div className="flex md:flex-row flex-col gap-4 w-full">
+                <div className="space-y-2 max-w-[200px]">
+                  <Label htmlFor="dateOfBirth">
+                    {t("profile.dateOfBirth", "Date of Birth")}
+                  </Label>
+                  <Input
+                    id="dateOfBirth"
+                    type="date"
+                    value={dateOfBirth}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2 max-w-[150px]">
+                  <Label htmlFor="gender">{t("profile.gender", "Gender")}</Label>
+                  <select
+                    id="gender"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <option value="unknown">{t("profile.genderOptions.unknown", "Prefer not to say")}</option>
+                    <option value="male">{t("profile.genderOptions.male", "Male")}</option>
+                    <option value="female">{t("profile.genderOptions.female", "Female")}</option>
+                    <option value="other">{t("profile.genderOptions.other", "Other")}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-2 max-w-[250px]">
+                <Label htmlFor="phone">{t("profile.phone", "Phone")}</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={t("profile.phonePlaceholder", "+48 123 456 789")}
+                />
+              </div>
+
+              <div className="space-y-2 max-w-[350px]">
+                <Label htmlFor="address">{t("profile.address", "Address")}</Label>
+                <Input
+                  id="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder={t("profile.addressPlaceholder", "Your address")}
+                />
+              </div>
+
+              <div className="space-y-2 max-w-[200px]">
+                <Label htmlFor="pesel">{t("profile.pesel", "PESEL")}</Label>
+                <Input
+                  id="pesel"
+                  value={pesel}
+                  onChange={(e) => {
+                    // Only allow digits and max 11 characters
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                    setPesel(value);
+                  }}
+                  placeholder="12345678901"
+                  maxLength={11}
+                />
+                <p className="text-xs text-muted-foreground">
+                  {t("profile.peselHelp", "11-digit Polish national ID number")}
+                </p>
+              </div>
+            </>
           )}
 
           {/* Email (Disabled) */}

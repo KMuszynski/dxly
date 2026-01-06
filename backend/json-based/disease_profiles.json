@@ -1,0 +1,403 @@
+{
+  "_metadata": {
+    "scoring_logic": {
+      "importance": "0.0 to 1.0 (How critical this symptom is for diagnosis)",
+      "match_types": {
+        "enum": "Exact string match",
+        "range": "Patient value must fall between [min, max]",
+        "list": "Patient value must be one of the listed strings"
+      }
+    }
+  },
+  "Pneumonia": {
+    "common_name": "Pneumonia",
+    "prevalence": 0.05,
+    "symptoms": {
+      "Cough": {
+        "importance": 0.9,
+        "expectations": {
+          "cough_type": "productive",
+          "sputum_color": ["yellow_green", "rust_bloody"],
+          "onset": "gradual"
+        }
+      },
+      "Fever": {
+        "importance": 0.8,
+        "expectations": {
+          "intensity": [7, 10]
+        }
+      }
+    }
+  },
+  "Migraine": {
+    "common_name": "Migraine",
+    "prevalence": 0.12,
+    "symptoms": {
+      "Headache": {
+        "importance": 1.0,
+        "expectations": {
+          "location": "unilateral",
+          "intensity": [7, 10],
+          "onset": "gradual"
+        }
+      }
+    }
+  },
+  "Acute Otitis Media": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": {
+        "importance": 1.0,
+        "expectations": {
+          "pain_character": "throbbing",
+          "location": "deep_internal",
+          "intensity": [6, 10],
+          "discharge": "none"
+        }
+      },
+      "Fever": {
+        "importance": 0.7,
+        "expectations": { "pattern": "intermittent" }
+      },
+      "Hearing Loss": {
+        "importance": 0.6,
+        "expectations": { "quality": "muffled" }
+      }
+    }
+  },
+  "Otitis Externa": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": {
+        "importance": 1.0,
+        "expectations": {
+          "pain_character": "sharp",
+          "location": "outer_canal",
+          "aggravated_by": "touching_ear",
+          "discharge": ["clear_watery", "foul_smelling_pus"]
+        }
+      }
+    }
+  },
+  "Mastoiditis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": {
+        "importance": 1.0,
+        "expectations": { "location": "behind_ear", "intensity": [8, 10] }
+      },
+      "Fever": { "importance": 0.9, "expectations": { "pattern": "constant" } },
+      "Physical Exam": {
+        "importance": 1.0,
+        "expectations": { "redness_behind_ear": true, "ear_protrusion": true }
+      }
+    }
+  },
+  "Strep Pharyngitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Sore Throat": {
+        "importance": 1.0,
+        "expectations": {
+          "physical_signs": "white_patches",
+          "swallowing_pain": "severe",
+          "intensity": [7, 10]
+        }
+      },
+      "Fever": { "importance": 0.8, "expectations": { "onset": "sudden" } },
+      "Cough": {
+        "importance": -0.8,
+        "note": "Lack of cough is a key Centor Criterion for Strep"
+      }
+    }
+  },
+  "Peritonsillar Abscess": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Sore Throat": {
+        "importance": 1.0,
+        "expectations": {
+          "voice_quality": "hot_potato_muffled",
+          "physical_signs": "uvula_shift",
+          "swallowing_pain": "unable_to_swallow_drooling"
+        }
+      },
+      "Trismus": { "importance": 0.8, "note": "Difficulty opening mouth" }
+    }
+  },
+  "Meniere's Disease": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Vertigo": {
+        "importance": 1.0,
+        "expectations": { "episode_duration": "hours", "onset": "sudden" }
+      },
+      "Hearing Loss": {
+        "importance": 1.0,
+        "expectations": {
+          "associated_sounds": "ringing_tinnitus",
+          "side": ["left", "right"]
+        }
+      },
+      "Aural Fullness": {
+        "importance": 0.7,
+        "note": "Feeling of pressure in ear"
+      }
+    }
+  },
+  "BPPV": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Vertigo": {
+        "importance": 1.0,
+        "expectations": {
+          "episode_duration": "seconds",
+          "trigger": "head_movement"
+        }
+      }
+    }
+  },
+  "Vestibular Neuritis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Vertigo": {
+        "importance": 1.0,
+        "expectations": {
+          "episode_duration": "constant_days",
+          "trigger": "recent_viral_infection"
+        }
+      },
+      "Nausea": {
+        "importance": 0.9,
+        "expectations": { "nausea_severity": "severe_vomiting" }
+      }
+    }
+  },
+  "Acute Bacterial Sinusitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Nasal Symptoms": {
+        "importance": 1.0,
+        "expectations": {
+          "mucus_consistency": "green_yellow_purulent",
+          "duration_days": [10, 30]
+        }
+      },
+      "Facial Pain": {
+        "importance": 0.9,
+        "expectations": { "location": "under_eyes", "character": "pressure" }
+      }
+    }
+  },
+  "Allergic Rhinitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Nasal Symptoms": {
+        "importance": 1.0,
+        "expectations": {
+          "mucus_consistency": "watery_clear",
+          "obstruction_side": "bilateral"
+        }
+      },
+      "Sneezing": { "importance": 0.9 },
+      "Itchy Eyes": { "importance": 0.8 }
+    }
+  },
+  "Epiglottitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Sore Throat": {
+        "importance": 1.0,
+        "expectations": {
+          "swallowing_pain": "unable_to_swallow_drooling",
+          "voice_quality": "hot_potato_muffled"
+        }
+      },
+      "Stridor": {
+        "importance": 1.0,
+        "note": "Emergency: high pitched breathing"
+      },
+      "Tripod Position": {
+        "importance": 0.9,
+        "note": "Patient leaning forward to breathe"
+      }
+    }
+  },
+  "Laryngitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Voice Change": {
+        "importance": 1.0,
+        "expectations": { "voice_quality": "hoarse", "onset": "gradual" }
+      },
+      "Sore Throat": { "importance": 0.4 }
+    }
+  },
+  "Acoustic Neuroma": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Hearing Loss": {
+        "importance": 1.0,
+        "expectations": { "side": ["left", "right"], "onset": "gradual" }
+      },
+      "Tinnitus": { "importance": 0.8 }
+    }
+  },
+  "Cholesteatoma": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": { "importance": 0.3 },
+      "Ear Discharge": {
+        "importance": 1.0,
+        "expectations": { "discharge": "foul_smelling_pus" }
+      },
+      "Hearing Loss": {
+        "importance": 0.8,
+        "expectations": { "onset": "gradual" }
+      }
+    }
+  },
+  "Eustachian Tube Dysfunction": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": {
+        "importance": 0.7,
+        "expectations": {
+          "pain_character": "pressure",
+          "aggravated_by": "pressure_change"
+        }
+      },
+      "Hearing Loss": {
+        "importance": 0.8,
+        "expectations": { "quality": "muffled", "associated_sounds": "popping" }
+      }
+    }
+  },
+  "Infectious Mononucleosis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Sore Throat": {
+        "importance": 1.0,
+        "expectations": {
+          "duration_days": [7, 21],
+          "physical_signs": "white_patches"
+        }
+      },
+      "Fatigue": {
+        "importance": 1.0,
+        "expectations": { "intensity": [8, 10] }
+      },
+      "Lymphadenopathy": {
+        "importance": 0.9,
+        "note": "Large swollen glands in neck"
+      }
+    }
+  },
+  "Sialolithiasis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Salivary Pain": {
+        "importance": 1.0,
+        "expectations": { "trigger": "chewing", "onset": "sudden" }
+      },
+      "Jaw Swelling": { "importance": 0.9 }
+    }
+  },
+  "Laryngopharyngeal Reflux": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Globus Sensation": {
+        "importance": 1.0,
+        "note": "Feeling of lump in throat"
+      },
+      "Chronic Throat Clearing": { "importance": 0.9 },
+      "Voice Change": {
+        "importance": 0.7,
+        "expectations": { "voice_quality": "raspy" }
+      }
+    }
+  },
+  "Septal Hematoma": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Nasal Symptoms": {
+        "importance": 1.0,
+        "expectations": { "onset": "sudden", "obstruction_side": "bilateral" }
+      },
+      "Nasal Trauma": { "importance": 1.0 }
+    }
+  },
+  "Ludwig's Angina": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Sublingual Swelling": {
+        "importance": 1.0,
+        "note": "Floor of mouth is hard and swollen"
+      },
+      "Sore Throat": {
+        "importance": 0.8,
+        "expectations": { "swallowing_pain": "unable_to_swallow_drooling" }
+      }
+    }
+  },
+  "Nasal Polyps": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Nasal Symptoms": {
+        "importance": 1.0,
+        "expectations": {
+          "duration_days": [30, 365],
+          "smell_sense": "completely_gone"
+        }
+      }
+    }
+  },
+  "Barotrauma": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Ear Pain": {
+        "importance": 1.0,
+        "expectations": {
+          "onset": "sudden",
+          "aggravated_by": "pressure_change"
+        }
+      },
+      "Hearing Loss": {
+        "importance": 0.6,
+        "expectations": { "quality": "muffled" }
+      }
+    }
+  },
+  "Thyroglossal Duct Cyst": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Midline Neck Mass": {
+        "importance": 1.0,
+        "note": "Lump that moves when sticking tongue out"
+      }
+    }
+  },
+  "Vocal Cord Nodules": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Voice Change": {
+        "importance": 1.0,
+        "expectations": { "voice_quality": "hoarse", "onset": "gradual" }
+      },
+      "Voice Strain": { "importance": 0.8, "note": "Worsens after talking" }
+    }
+  },
+  "Acute Viral Rhinosinusitis": {
+    "category": "Otolaryngology",
+    "symptoms": {
+      "Nasal Symptoms": {
+        "importance": 1.0,
+        "expectations": {
+          "mucus_consistency": "watery_clear",
+          "duration_days": [1, 9]
+        }
+      },
+      "Cough": { "importance": 0.5 }
+    }
+  }
+}

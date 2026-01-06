@@ -163,7 +163,7 @@ export function LoginForm({
           </Field>
           <Field>
             <Button
-              className="bg-blue-600 text-white hover:bg-[#5a189a]/85"
+              className="bg-brand text-white hover:!bg-brand hover:brightness-125"
               type="submit"
               disabled={isLoading}
             >

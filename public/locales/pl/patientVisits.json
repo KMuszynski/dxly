@@ -1,0 +1,68 @@
+{
+  "title": "Moje wizyty",
+  "subtitle": "Przeglądaj wizyty i dodaj objawy przed wizytą",
+  "with": "Z",
+  "addSymptoms": "Dodaj objawy",
+  "enteredSymptoms": "Twoje objawy",
+  "symptoms": "Objawy",
+  "diagnoses": "Diagnozy",
+  "notes": "Notatki",
+  "status": {
+    "scheduled": "Zaplanowana",
+    "checkedIn": "Zameldowano",
+    "inProgress": "W trakcie",
+    "completed": "Zakończona",
+    "cancelled": "Anulowana"
+  },
+  "table": {
+    "date": "Data",
+    "doctor": "Lekarz",
+    "status": "Status",
+    "symptoms": "Objawy",
+    "diagnoses": "Diagnozy",
+    "actions": "Akcje",
+    "openMenu": "Otwórz menu",
+    "viewVisit": "Zobacz wizytę",
+    "addSymptoms": "Dodaj objawy",
+    "loading": "Ładowanie...",
+    "noVisits": "Nie znaleziono wizyt",
+    "showing": "Pokazuje {{count}} z {{total}} wizyt",
+    "previous": "Poprzednia",
+    "next": "Następna"
+  },
+  "upcoming": {
+    "title": "Nadchodzące wizyty",
+    "noVisits": {
+      "title": "Brak nadchodzących wizyt",
+      "description": "Skontaktuj się z kliniką, aby umówić wizytę."
+    }
+  },
+  "past": {
+    "title": "Poprzednie wizyty"
+  },
+  "dialog": {
+    "title": "Wprowadź swoje objawy",
+    "description": "Pomóż swojemu lekarzowi opisując objawy przed wizytą.",
+    "loading": "Ładowanie...",
+    "yourSymptoms": "Twoje objawy",
+    "addSymptom": "Dodaj objaw",
+    "noSymptoms": "Nie dodano jeszcze objawów",
+    "addFirst": "Dodaj pierwszy objaw",
+    "addAnother": "Dodaj kolejny objaw",
+    "symptomLabel": "Objaw",
+    "symptomPlaceholder": "Wpisz, aby wyszukać objawy...",
+    "noSuggestions": "Nie znaleziono sugestii. Możesz wpisać własny objaw.",
+    "select": "Wybierz...",
+    "followUps": "Pytania uzupełniające",
+    "followUpQuestions": "pytań uzupełniających",
+    "notesLabel": "Dodatkowe uwagi",
+    "notesPlaceholder": "Dodatkowe szczegóły...",
+    "cancel": "Anuluj",
+    "save": "Zapisz objawy",
+    "saving": "Zapisywanie..."
+  },
+  "messages": {
+    "symptomsSaved": "Objawy zostały zapisane!",
+    "saveError": "Nie udało się zapisać objawów. Spróbuj ponownie."
+  }
+}

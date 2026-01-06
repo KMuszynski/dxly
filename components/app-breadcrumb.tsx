@@ -10,6 +10,7 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { LanguageSwitcher } from "./language-switcher";
+import { TourStep } from "./guided-tour";
 
 export function AppBreadcrumb() {
   const { t } = useTranslation("common");
@@ -21,6 +22,7 @@ export function AppBreadcrumb() {
     "/settings": t("breadcrumb.settings"),
     "/patients": t("breadcrumb.patients"),
     "/doctor/visits": t("breadcrumb.visits"),
+    "/patient/visits": t("breadcrumb.myVisits"),
   };
 
   // Get the current page name
@@ -32,7 +34,18 @@ export function AppBreadcrumb() {
         <BreadcrumbItem className="w-full">
           <div className="flex justify-between items-center w-full">
             <BreadcrumbPage>{currentPage}</BreadcrumbPage>
-            <LanguageSwitcher colorMode="white" />
+            <TourStep
+              id="tour-language"
+              title={t("tour.language.title", "Language")}
+              content={t(
+                "tour.language.content",
+                "Switch between English and Polish to use the app in your preferred language."
+              )}
+              order={6}
+              position="bottom"
+            >
+              <LanguageSwitcher colorMode="white" />
+            </TourStep>
           </div>
         </BreadcrumbItem>
       </BreadcrumbList>

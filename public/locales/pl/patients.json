@@ -3,16 +3,35 @@
   "subtitle": "Zarządzaj pacjentami i ich informacjami",
   "table": {
     "patientName": "Imię i nazwisko",
+    "pesel": "PESEL",
+    "email": "Email",
     "openMenu": "Otwórz menu",
     "actions": "Akcje",
     "editPatient": "Edytuj pacjenta",
+    "deletePatient": "Usuń pacjenta",
     "addPatient": "Dodaj pacjenta",
     "loading": "Ładowanie pacjentów...",
-    "filterPlaceholder": "Filtruj po imieniu pacjenta...",
+    "filterPlaceholder": "Filtruj po imieniu, PESEL lub email...",
     "noResults": "Brak wyników.",
     "showing": "Wyświetlanie {{count}} z {{total}} pacjent(ów)",
     "previous": "Poprzednia",
     "next": "Następna"
+  },
+  "delete": {
+    "title": "Usuń pacjenta",
+    "description": "Czy na pewno chcesz usunąć {{name}}? Tej akcji nie można cofnąć.",
+    "buttons": {
+      "cancel": "Anuluj",
+      "delete": "Usuń",
+      "deleting": "Usuwanie..."
+    },
+    "errors": {
+      "deleteFailed": "Nie udało się usunąć pacjenta. Spróbuj ponownie.",
+      "deleteError": "Wystąpił błąd podczas usuwania pacjenta"
+    },
+    "success": {
+      "patientDeleted": "Pacjent został pomyślnie usunięty"
+    }
   },
   "add": {
     "title": "Dodaj nowego pacjenta",
@@ -21,17 +40,23 @@
       "firstName": "Imię",
       "lastName": "Nazwisko",
       "dateOfBirth": "Data urodzenia",
+      "pesel": "PESEL",
       "gender": "Płeć",
       "phone": "Telefon",
       "email": "Email",
-      "address": "Adres"
+      "address": "Adres",
+      "password": "Hasło",
+      "confirmPassword": "Potwierdź hasło"
     },
     "placeholders": {
       "firstName": "Wprowadź imię",
       "lastName": "Wprowadź nazwisko",
+      "pesel": "11-cyfrowy numer PESEL",
       "phone": "Wprowadź numer telefonu",
       "email": "Wprowadź adres email",
-      "address": "Wprowadź adres"
+      "address": "Wprowadź adres",
+      "password": "Wprowadź hasło (min. 6 znaków)",
+      "confirmPassword": "Potwierdź hasło"
     },
     "gender": {
       "unknown": "Nieznana",
@@ -47,8 +72,14 @@
     "errors": {
       "firstNameLastNameRequired": "Imię i nazwisko są wymagane",
       "dateOfBirthRequired": "Data urodzenia jest wymagana",
+      "emailRequired": "Email jest wymagany do logowania pacjenta",
       "invalidEmail": "Wprowadź poprawny adres email",
       "invalidPhone": "Wprowadź poprawny numer telefonu",
+      "invalidPesel": "PESEL musi składać się z dokładnie 11 cyfr",
+      "passwordRequired": "Hasło jest wymagane",
+      "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+      "passwordMismatch": "Hasła nie są zgodne",
+      "emailAlreadyExists": "Pacjent z tym adresem email już istnieje",
       "addFailed": "Nie udało się dodać pacjenta. Spróbuj ponownie.",
       "saveError": "Wystąpił błąd podczas dodawania pacjenta"
     },
@@ -96,6 +127,9 @@
     },
     "success": {
       "patientUpdated": "Pacjent został pomyślnie zaktualizowany"
+    },
+    "warnings": {
+      "userUpdateFailed": "Pacjent zaktualizowany, ale nie udało się zsynchronizować powiązanego konta użytkownika"
     }
   }
 }

@@ -1,0 +1,47 @@
+DONE:
+- patient type: add a new user type for patients, so that they can input their symptoms before the visit [DONE]
+- desieses/symptoms database: search for or more likelly artificially generate at least part of the databse that will also include parameters such as duration of the symptom [DONE]
+- add follow up questions after the symptoms to better fit the diagnosis for the patient [DONE]
+- change language selector flags to more pretty ones (possibly npm install flag-icons) [DONE]
+
+
+
+- Sidebar: 
+    make logo black and bigger, [DONE]
+    make section titles bigger, [DECIDED NOT TO DO THIS]
+    highlight the current section, [DONE]
+    move settings to bottom, [DECIDED NOT TO DO THIS]
+    
+
+- make dashboard prettier (definetelly delete the emoji) [DONE]
+
+- add visit modal: make a set height (potentially full screen) (now it changes height - weird) [DONE]
+- add an option to delete a visit (with some confirmation modal to make it safe) [DONE]
+- merge diagnosis and details stages - i think you can just add notes straight into the diagnoses - no need for that separate details stage just to add notes to diagnosees [DONE]
+
+- make the edit visit pretty [DONE]
+- change patient's view of visits to maybe match the doctor's one? [DONE]
+- add patient pesel to visit rows - also filter by it [DONE]
+
+- incorporate the primary color (purple) and secondary color (blue) into the app mainly the buttons, and the other elements ikd [DONE]
+
+- add patient filtering by pesel, email - add theese to rows [DONE]
+- add delete patient option [DONE]
+- fix patient creation [DONE]
+
+- integrate the LLM API to actually prepare the visit notes. (GEMINI_API_KEY is in env) [DONE]
+
+- make sidebar highlight work if page is changed other way as well [DONE]
+
+- delete visit confirmation modal - make it custom [DONE]
+
+- change the multiple choice selectors on symptom to custom ones [DONE]
+
+- change profile pictures to no copyright ones. [DONE]
+
+- add a walkthrough: a button on the dashboard that will walk the users through the app [DONE]
+
+TODO:
+- write about the desiese/symptom model in the readme: Otolaryngology 25, Gastrointestinal 25, General / Infectious 25, Cardio / Respiratory 25
+- add more desieses/symptoms to database
+

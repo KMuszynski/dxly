@@ -1,0 +1,54 @@
+{
+  "loading": "Ładowanie...",
+  "greeting": {
+    "morning": "Dzień dobry",
+    "afternoon": "Dzień dobry",
+    "evening": "Dobry wieczór"
+  },
+  "welcome": {
+    "subtitle": "Witaj w portalu pacjenta"
+  },
+  "nextVisit": "Następna wizyta",
+  "addSymptoms": "Dodaj objawy",
+  "otherVisits": "Inne nadchodzące wizyty",
+  "errors": {
+    "profileNotFound": {
+      "title": "Nie znaleziono profilu",
+      "description": "Nie można załadować profilu. Spróbuj ponownie później."
+    }
+  },
+  "quickActions": {
+    "title": "Szybkie akcje",
+    "enterSymptoms": {
+      "title": "Wprowadź objawy",
+      "description": "Dodaj objawy przed nadchodzącą wizytą"
+    },
+    "viewVisits": {
+      "title": "Moje wizyty",
+      "description": "Zobacz nadchodzące i poprzednie wizyty"
+    },
+    "updateProfile": {
+      "title": "Mój profil",
+      "description": "Zaktualizuj swoje dane osobowe"
+    },
+    "walkthrough": {
+      "title": "Przewodnik",
+      "description": "Rozpocznij wycieczkę po aplikacji"
+    }
+  },
+  "upcomingVisits": {
+    "title": "Nadchodzące wizyty",
+    "with": "Z",
+    "addSymptoms": "Dodaj objawy",
+    "noVisits": {
+      "title": "Brak nadchodzących wizyt",
+      "description": "Nie masz zaplanowanych wizyt. Skontaktuj się z kliniką, aby umówić wizytę."
+    }
+  },
+  "status": {
+    "scheduled": "Zaplanowana",
+    "checkedIn": "Zameldowano",
+    "completed": "Zakończona"
+  }
+}
+

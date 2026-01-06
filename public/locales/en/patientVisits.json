@@ -1,0 +1,68 @@
+{
+  "title": "My Visits",
+  "subtitle": "View your appointments and add symptoms before your visit",
+  "with": "With",
+  "addSymptoms": "Add Symptoms",
+  "enteredSymptoms": "Your Symptoms",
+  "symptoms": "Symptoms",
+  "diagnoses": "Diagnoses",
+  "notes": "Notes",
+  "status": {
+    "scheduled": "Scheduled",
+    "checkedIn": "Checked In",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "table": {
+    "date": "Date",
+    "doctor": "Doctor",
+    "status": "Status",
+    "symptoms": "Symptoms",
+    "diagnoses": "Diagnoses",
+    "actions": "Actions",
+    "openMenu": "Open menu",
+    "viewVisit": "View Visit",
+    "addSymptoms": "Add Symptoms",
+    "loading": "Loading...",
+    "noVisits": "No visits found",
+    "showing": "Showing {{count}} of {{total}} visits",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "upcoming": {
+    "title": "Upcoming Visits",
+    "noVisits": {
+      "title": "No Upcoming Visits",
+      "description": "Contact your clinic to schedule an appointment."
+    }
+  },
+  "past": {
+    "title": "Past Visits"
+  },
+  "dialog": {
+    "title": "Enter Your Symptoms",
+    "description": "Help your doctor by describing your symptoms before your visit.",
+    "loading": "Loading...",
+    "yourSymptoms": "Your Symptoms",
+    "addSymptom": "Add Symptom",
+    "noSymptoms": "No symptoms added yet",
+    "addFirst": "Add Your First Symptom",
+    "addAnother": "Add Another Symptom",
+    "symptomLabel": "Symptom",
+    "symptomPlaceholder": "Type to search symptoms...",
+    "noSuggestions": "No suggestions found. You can type your own symptom.",
+    "select": "Select...",
+    "followUps": "Follow-up Questions",
+    "followUpQuestions": "follow-up questions",
+    "notesLabel": "Additional Notes",
+    "notesPlaceholder": "Any additional details...",
+    "cancel": "Cancel",
+    "save": "Save Symptoms",
+    "saving": "Saving..."
+  },
+  "messages": {
+    "symptomsSaved": "Symptoms saved successfully!",
+    "saveError": "Failed to save symptoms. Please try again."
+  }
+}

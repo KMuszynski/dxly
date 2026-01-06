@@ -18,5 +18,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@rigidui": "https://rigidui.com/r/{name}.json"
+  }
 }

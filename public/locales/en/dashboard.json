@@ -1,0 +1,70 @@
+{
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "addPatient": {
+      "title": "Add Patient",
+      "description": "Register a new patient"
+    },
+    "newVisit": {
+      "title": "New Visit",
+      "description": "Record a patient visit"
+    },
+    "viewPatients": {
+      "title": "View Patients",
+      "description": "Browse all patients"
+    },
+    "viewVisits": {
+      "title": "View Visits",
+      "description": "Manage patient visits"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Manage your account"
+    },
+    "walkthrough": {
+      "title": "Walkthrough",
+      "description": "Take a guided tour"
+    }
+  },
+  "upcomingVisits": {
+    "title": "Upcoming Visits",
+    "viewVisit": "View",
+    "noVisits": {
+      "title": "No Upcoming Visits",
+      "description": "You don't have any scheduled visits."
+    }
+  },
+  "helpfulInfo": {
+    "title": "Helpful Information",
+    "profilePicture": {
+      "title": "Profile Picture",
+      "description": "You can change your profile picture in the {{link}}Settings{{/link}} page. Upload an image to personalize your account."
+    },
+    "diagnosisAssistant": {
+      "title": "Diagnosis Assistant",
+      "description": "When recording a visit, the system uses AI to suggest possible diagnoses based on the symptoms you enter. Review and select the most appropriate diagnosis."
+    },
+    "patientManagement": {
+      "title": "Patient Management",
+      "description": "Add new patients by clicking \"Add Patient\" above or navigate to the {{link}}Patients{{/link}} page to view and manage all registered patients."
+    },
+    "visitRecords": {
+      "title": "Visit Records",
+      "description": "Record patient visits with symptoms, diagnoses, and notes. All visit records are securely stored and can be accessed from the {{link}}Visits{{/link}} page."
+    }
+  },
+  "errors": {
+    "loading": "Loading...",
+    "profileNotFound": {
+      "title": "Error",
+      "description": "User profile not found. Please contact support."
+    }
+  }
+}
+
+

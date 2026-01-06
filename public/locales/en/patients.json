@@ -3,16 +3,35 @@
   "subtitle": "Manage your patients and their information",
   "table": {
     "patientName": "Patient Name",
+    "pesel": "PESEL",
+    "email": "Email",
     "openMenu": "Open menu",
     "actions": "Actions",
     "editPatient": "Edit Patient",
+    "deletePatient": "Delete Patient",
     "addPatient": "Add Patient",
     "loading": "Loading patients...",
-    "filterPlaceholder": "Filter by patient name...",
+    "filterPlaceholder": "Filter by name, PESEL, or email...",
     "noResults": "No results.",
     "showing": "Showing {{count}} of {{total}} patient(s)",
     "previous": "Previous",
     "next": "Next"
+  },
+  "delete": {
+    "title": "Delete Patient",
+    "description": "Are you sure you want to delete {{name}}? This action cannot be undone.",
+    "buttons": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "errors": {
+      "deleteFailed": "Failed to delete patient. Please try again.",
+      "deleteError": "An error occurred while deleting the patient"
+    },
+    "success": {
+      "patientDeleted": "Patient deleted successfully"
+    }
   },
   "add": {
     "title": "Add New Patient",
@@ -21,17 +40,23 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "dateOfBirth": "Date of Birth",
+      "pesel": "PESEL",
       "gender": "Gender",
       "phone": "Phone",
       "email": "Email",
-      "address": "Address"
+      "address": "Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
     },
     "placeholders": {
       "firstName": "Enter first name",
       "lastName": "Enter last name",
+      "pesel": "11-digit PESEL number",
       "phone": "Enter phone number",
       "email": "Enter email address",
-      "address": "Enter address"
+      "address": "Enter address",
+      "password": "Enter password (min. 6 characters)",
+      "confirmPassword": "Confirm password"
     },
     "gender": {
       "unknown": "Unknown",
@@ -47,8 +72,14 @@
     "errors": {
       "firstNameLastNameRequired": "First name and last name are required",
       "dateOfBirthRequired": "Date of birth is required",
+      "emailRequired": "Email is required for patient login",
       "invalidEmail": "Please enter a valid email address",
       "invalidPhone": "Please enter a valid phone number",
+      "invalidPesel": "PESEL must be exactly 11 digits",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordMismatch": "Passwords do not match",
+      "emailAlreadyExists": "A patient with this email already exists",
       "addFailed": "Failed to add patient. Please try again.",
       "saveError": "An error occurred while adding the patient"
     },
@@ -96,6 +127,9 @@
     },
     "success": {
       "patientUpdated": "Patient updated successfully"
+    },
+    "warnings": {
+      "userUpdateFailed": "Patient updated, but linked user account could not be synced"
     }
   }
 }

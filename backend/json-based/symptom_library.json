@@ -1,0 +1,250 @@
+{
+  "_metadata": {
+    "description": "Definition of symptoms and their follow-up questions.",
+    "standard_enums": {
+      "onset_type": ["sudden", "gradual", "chronic"],
+      "intensity_scale": "1-10 (1: Minimal, 10: Emergency)",
+      "duration_units": ["hours", "days", "weeks", "months"]
+    }
+  },
+  "Cough": {
+    "display_name": "Cough",
+    "global_follow_ups": [
+      { "key": "duration_value", "label": "How long?", "type": "number" },
+      {
+        "key": "duration_unit",
+        "label": "Unit",
+        "type": "enum",
+        "options": ["hours", "days", "weeks"]
+      },
+      {
+        "key": "onset",
+        "label": "How did it start?",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "cough_type",
+        "label": "Is the cough dry or wet?",
+        "type": "enum",
+        "options": ["dry", "productive", "barking"]
+      },
+      {
+        "key": "sputum_color",
+        "label": "Phlegm color (if wet)",
+        "type": "enum",
+        "options": ["clear", "white", "yellow_green", "rust_bloody"]
+      }
+    ]
+  },
+  "Headache": {
+    "display_name": "Headache",
+    "global_follow_ups": [
+      {
+        "key": "intensity",
+        "label": "Intensity (1-10)",
+        "type": "range",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "location",
+        "label": "Location",
+        "type": "enum",
+        "options": ["unilateral", "bilateral", "behind_eyes"]
+      }
+    ]
+  },
+  "Ear Pain": {
+    "display_name": "Ear Pain",
+    "global_follow_ups": [
+      {
+        "key": "intensity",
+        "label": "Intensity (1-10)",
+        "type": "range",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "pain_character",
+        "label": "Character",
+        "type": "enum",
+        "options": ["sharp", "throbbing", "pressure", "itching"]
+      },
+      {
+        "key": "aggravated_by",
+        "label": "Worsened by",
+        "type": "enum",
+        "options": ["touching_ear", "chewing", "pressure_change", "none"]
+      },
+      {
+        "key": "discharge",
+        "label": "Discharge",
+        "type": "enum",
+        "options": ["none", "clear_watery", "foul_smelling_pus", "bloody"]
+      },
+      {
+        "key": "location",
+        "label": "Specific Location",
+        "type": "enum",
+        "options": ["deep_internal", "outer_canal", "behind_ear"]
+      }
+    ]
+  },
+  "Sore Throat": {
+    "display_name": "Sore Throat",
+    "global_follow_ups": [
+      {
+        "key": "intensity",
+        "label": "Intensity (1-10)",
+        "type": "range",
+        "min": 1,
+        "max": 10
+      },
+      { "key": "duration_days", "label": "Duration (days)", "type": "number" }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "voice_quality",
+        "label": "Voice Quality",
+        "type": "enum",
+        "options": ["normal", "hoarse", "hot_potato_muffled", "lost", "raspy"]
+      },
+      {
+        "key": "physical_signs",
+        "label": "Visible signs",
+        "type": "enum",
+        "options": [
+          "redness",
+          "white_patches",
+          "uvula_shift",
+          "asymmetric_swelling",
+          "none"
+        ]
+      },
+      {
+        "key": "swallowing_pain",
+        "label": "Painful swallowing?",
+        "type": "enum",
+        "options": ["none", "mild", "severe", "unable_to_swallow_drooling"]
+      }
+    ]
+  },
+  "Vertigo": {
+    "display_name": "Dizziness/Vertigo",
+    "global_follow_ups": [
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "episode_duration",
+        "label": "How long do episodes last?",
+        "type": "enum",
+        "options": ["seconds", "minutes", "hours", "constant_days"]
+      },
+      {
+        "key": "trigger",
+        "label": "Triggered by",
+        "type": "enum",
+        "options": [
+          "head_movement",
+          "standing_up",
+          "recent_viral_infection",
+          "none"
+        ]
+      },
+      {
+        "key": "nausea_severity",
+        "label": "Nausea Level",
+        "type": "enum",
+        "options": ["none", "mild", "severe_vomiting"]
+      }
+    ]
+  },
+  "Hearing Loss": {
+    "display_name": "Hearing Loss",
+    "unique_follow_ups": [
+      {
+        "key": "side",
+        "label": "Which side?",
+        "type": "enum",
+        "options": ["left", "right", "bilateral"]
+      },
+      {
+        "key": "quality",
+        "label": "How does it sound?",
+        "type": "enum",
+        "options": ["muffled", "total_loss", "distorted"]
+      },
+      {
+        "key": "associated_sounds",
+        "label": "Associated sounds",
+        "type": "enum",
+        "options": ["none", "ringing_tinnitus", "popping", "pulsing"]
+      }
+    ]
+  },
+  "Fever": {
+    "display_name": "Fever",
+    "global_follow_ups": [
+      { "key": "intensity_val", "label": "Temperature (C)", "type": "number" },
+      {
+        "key": "pattern",
+        "label": "Pattern",
+        "type": "enum",
+        "options": ["constant", "intermittent", "worsening_at_night"]
+      }
+    ]
+  },
+  "Nasal Symptoms": {
+    "display_name": "Nasal Congestion/Discharge",
+    "unique_follow_ups": [
+      {
+        "key": "mucus_consistency",
+        "label": "Mucus type",
+        "type": "enum",
+        "options": [
+          "watery_clear",
+          "thick_white",
+          "green_yellow_purulent",
+          "bloody"
+        ]
+      },
+      {
+        "key": "obstruction_side",
+        "label": "Obstruction Side",
+        "type": "enum",
+        "options": ["left", "right", "bilateral", "alternating"]
+      },
+      {
+        "key": "smell_sense",
+        "label": "Sense of smell",
+        "type": "enum",
+        "options": ["normal", "reduced", "completely_gone"]
+      }
+    ]
+  }
+}

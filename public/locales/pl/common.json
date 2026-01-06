@@ -3,15 +3,19 @@
     "logo": "DXLY",
     "login": "Zaloguj się",
     "features": "Funkcje",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "logout": "Wyloguj się"
   },
   "hero": {
     "title": "Wspieraj lekarzy, nie zastępuj ich.",
     "subtitle": "Twój inteligentny współpilot w rozumowaniu klinicznym. DXLY pomaga klinicystom przejść od objawów do jasności dzięki wsparciu AI. Analizując wzorce, odkrywając możliwości i dostarczając różnicowania oparte na dowodach, DXLY umożliwia lekarzom podejmowanie szybszych, bardziej pewnych decyzji — bez utraty ludzkiego dotyku."
   },
+  "demo": {
+    "title": "Zobacz DXLY w akcji"
+  },
   "features": {
     "title": "Dlaczego DXLY",
-      "1": {
+    "1": {
       "title": "Szybsze różnicowania",
       "description": "Natychmiast zobacz prawdopodobne diagnozy na podstawie objawów pacjenta."
     },
@@ -55,6 +59,47 @@
     "dashboard": "Pulpit",
     "settings": "Ustawienia",
     "patients": "Pacjenci",
-    "visits": "Wizyty"
+    "visits": "Wizyty",
+    "myVisits": "Moje wizyty"
+  },
+  "tour": {
+    "sidebar": {
+      "title": "Pasek nawigacji",
+      "content": "Użyj tego paska bocznego, aby nawigować między wszystkimi stronami w aplikacji. Uzyskaj dostęp do pulpitu, pacjentów, wizyt i ustawień z dowolnego miejsca."
+    },
+    "patients": {
+      "title": "Pacjenci",
+      "content": "Przeglądaj i zarządzaj wszystkimi pacjentami. Dodawaj nowych pacjentów, wyszukuj po imieniu lub PESELu i uzyskuj dostęp do kart pacjentów."
+    },
+    "visits": {
+      "title": "Wizyty",
+      "content": "Zarządzaj swoimi wizytami i konsultacjami. Twórz nowe wizyty, rejestruj objawy, dodawaj diagnozy i generuj notatki wspierane przez AI."
+    },
+    "settings": {
+      "title": "Ustawienia",
+      "content": "Dostosuj swój profil, aktualizuj informacje, zmieniaj preferencje językowe i zarządzaj ustawieniami konta."
+    },
+    "upcomingVisits": {
+      "title": "Nadchodzące wizyty",
+      "content": "Zobacz zaplanowane wizyty na pierwszy rzut oka. Szybko uzyskaj dostęp do szczegółów wizyt i przygotuj się do nadchodzących konsultacji."
+    },
+    "language": {
+      "title": "Język",
+      "content": "Przełączaj między językiem angielskim a polskim, aby korzystać z aplikacji w preferowanym języku."
+    },
+    "patientVisits": {
+      "title": "Moje wizyty",
+      "content": "Przeglądaj wszystkie swoje wizyty tutaj. Możesz zobaczyć nadchodzące i przeszłe wizyty oraz dodać objawy przed konsultacją."
+    },
+    "patientUpcoming": {
+      "title": "Nadchodzące wizyty",
+      "content": "Zobacz swoje nadchodzące wizyty na pierwszy rzut oka. Możesz dodać objawy przed wizytą, aby pomóc lekarzowi się przygotować."
+    },
+    "buttons": {
+      "skip": "Pomiń",
+      "back": "Wstecz",
+      "next": "Dalej",
+      "finish": "Zakończ"
+    }
   }
 }

@@ -3,11 +3,15 @@
     "logo": "DXLY",
     "login": "Login",
     "features": "Features",
-    "contact": "Contact"
+    "contact": "Contact",
+    "logout": "Log out"
   },
   "hero": {
     "title": "Support doctors, not replace them.",
     "subtitle": "Your intelligent co-pilot for clinical reasoning. DXLY helps clinicians move from symptoms to clarity with AI-assisted insights. By analyzing patterns, surfacing possibilities, and providing evidence-based differentials, DXLY empowers doctors to make faster, more confident decisions — without losing the human touch."
+  },
+  "demo": {
+    "title": "See DXLY in action"
   },
   "features": {
     "title": "Why DXLY",
@@ -55,6 +59,47 @@
     "dashboard": "Dashboard",
     "settings": "Settings",
     "patients": "Patients",
-    "visits": "Visits"
+    "visits": "Visits",
+    "myVisits": "My Visits"
+  },
+  "tour": {
+    "sidebar": {
+      "title": "Navigation Sidebar",
+      "content": "Use this sidebar to navigate between all pages in the app. Access your dashboard, patients, visits, and settings from anywhere."
+    },
+    "patients": {
+      "title": "Patients",
+      "content": "View and manage all your patients. Add new patients, search by name or PESEL, and access patient records."
+    },
+    "visits": {
+      "title": "Visits",
+      "content": "Manage your appointments and consultations. Create new visits, record symptoms, add diagnoses, and generate AI-powered notes."
+    },
+    "settings": {
+      "title": "Settings",
+      "content": "Customize your profile, update your information, change language preferences, and manage your account settings."
+    },
+    "upcomingVisits": {
+      "title": "Upcoming Visits",
+      "content": "See your scheduled appointments at a glance. Quickly access visit details and prepare for upcoming consultations."
+    },
+    "language": {
+      "title": "Language",
+      "content": "Switch between English and Polish to use the app in your preferred language."
+    },
+    "patientVisits": {
+      "title": "My Visits",
+      "content": "View all your appointments here. You can see upcoming and past visits, and add symptoms before your consultation."
+    },
+    "patientUpcoming": {
+      "title": "Upcoming Visits",
+      "content": "See your upcoming appointments at a glance. You can add symptoms before your visit to help your doctor prepare."
+    },
+    "buttons": {
+      "skip": "Skip Tour",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish"
+    }
   }
 }

@@ -43,7 +43,7 @@ export function FeaturesCarousel() {
         {features.map((feature, index) => (
           <CarouselItem key={index} className="md:basis-1/3 basis-1/2">
             <div className="p-1 h-full">
-              <Card className="bg-[#ffffff05] backdrop-blur-lg border-solid border-2 border-gray-700 h-full">
+              <Card className="bg-black/10 backdrop-blur-md border-solid border-2 border-white/10 h-full">
                 <CardContent className="flex aspect-square items-center justify-center p-6 ">
                   <div className="flex flex-col items-center justify-center w-full">
                     <div className="text-4xl mr-4 flex-shrink-0 mb-4 text-gray-200">

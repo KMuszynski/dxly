@@ -1,0 +1,54 @@
+{
+  "loading": "Loading...",
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "welcome": {
+    "subtitle": "Welcome to your patient portal"
+  },
+  "nextVisit": "Next Visit",
+  "addSymptoms": "Add Symptoms",
+  "otherVisits": "Other Upcoming Visits",
+  "errors": {
+    "profileNotFound": {
+      "title": "Profile not found",
+      "description": "Unable to load your profile. Please try again later."
+    }
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "enterSymptoms": {
+      "title": "Enter Symptoms",
+      "description": "Add symptoms before your upcoming visit"
+    },
+    "viewVisits": {
+      "title": "My Visits",
+      "description": "View upcoming and past appointments"
+    },
+    "updateProfile": {
+      "title": "My Profile",
+      "description": "Update your personal information"
+    },
+    "walkthrough": {
+      "title": "Walkthrough",
+      "description": "Take a guided tour"
+    }
+  },
+  "upcomingVisits": {
+    "title": "Upcoming Visits",
+    "with": "With",
+    "addSymptoms": "Add Symptoms",
+    "noVisits": {
+      "title": "No Upcoming Visits",
+      "description": "You don't have any scheduled visits. Contact your clinic to book an appointment."
+    }
+  },
+  "status": {
+    "scheduled": "Scheduled",
+    "checkedIn": "Checked In",
+    "completed": "Completed"
+  }
+}
+

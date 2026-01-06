@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
-import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Eye, EyeOff } from "lucide-react";
 import type { Patient } from "./patients-table";
 
 interface AddPatientDialogProps {
@@ -40,6 +40,11 @@ export function AddPatientDialog({
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [pesel, setPesel] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   // Reset form when dialog opens/closes
   React.useEffect(() => {
@@ -52,6 +57,11 @@ export function AddPatientDialog({
       setPhone("");
       setEmail("");
       setAddress("");
+      setPesel("");
+      setPassword("");
+      setConfirmPassword("");
+      setShowPassword(false);
+      setShowConfirmPassword(false);
     }
   }, [open]);
 
@@ -67,9 +77,31 @@ export function AddPatientDialog({
       return;
     }
 
-    // Validate email format if provided
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    // Email is required for authentication
+    if (!email.trim()) {
+      toast.error(t("add.errors.emailRequired"));
+      return;
+    }
+
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error(t("add.errors.invalidEmail"));
+      return;
+    }
+
+    // Password validation
+    if (!password) {
+      toast.error(t("add.errors.passwordRequired"));
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error(t("add.errors.passwordTooShort"));
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error(t("add.errors.passwordMismatch"));
       return;
     }
 
@@ -79,41 +111,37 @@ export function AddPatientDialog({
       return;
     }
 
+    // Validate PESEL format if provided (11 digits)
+    if (pesel && !/^\d{11}$/.test(pesel)) {
+      toast.error(t("add.errors.invalidPesel"));
+      return;
+    }
+
     setSaving(true);
     try {
-      const insertData: any = {
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
-        date_of_birth: dateOfBirth,
-        gender,
-      };
+      const response = await fetch("/api/patients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          date_of_birth: dateOfBirth,
+          gender,
+          phone: phone.trim() || null,
+          email: email.trim(),
+          address: address.trim() || null,
+          pesel: pesel.trim() || null,
+          password,
+        }),
+      });
 
-      // Only include optional fields if they have values
-      if (phone.trim()) {
-        insertData.phone = phone.trim();
-      } else {
-        insertData.phone = null;
-      }
+      const data = await response.json();
 
-      if (email.trim()) {
-        insertData.email = email.trim();
-      } else {
-        insertData.email = null;
-      }
-
-      if (address.trim()) {
-        insertData.address = address.trim();
-      } else {
-        insertData.address = null;
-      }
-
-      const { error } = await supabase
-        .from("patients")
-        .insert(insertData);
-
-      if (error) {
-        console.error("Insert error:", error);
-        toast.error(t("add.errors.addFailed"));
+      if (!response.ok) {
+        console.error("Error creating patient:", data.error);
+        toast.error(data.error || t("add.errors.addFailed"));
       } else {
         toast.success(t("add.success.patientAdded"));
         onPatientAdded?.();
@@ -193,9 +221,7 @@ export function AddPatientDialog({
               <select
                 id="add-gender"
                 value={gender}
-                onChange={(e) =>
-                  setGender(e.target.value as Patient["gender"])
-                }
+                onChange={(e) => setGender(e.target.value as Patient["gender"])}
                 disabled={saving}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               >
@@ -207,8 +233,23 @@ export function AddPatientDialog({
             </div>
           </div>
 
-          {/* Phone and Email */}
+          {/* Email and Phone */}
           <div className="flex flex-col md:flex-row gap-4">
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="add-email">
+                {t("add.fields.email")}{" "}
+                <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="add-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("add.placeholders.email")}
+                disabled={saving}
+              />
+            </div>
+
             <div className="space-y-2 flex-1">
               <Label htmlFor="add-phone">{t("add.fields.phone")}</Label>
               <Input
@@ -220,30 +261,97 @@ export function AddPatientDialog({
                 disabled={saving}
               />
             </div>
+          </div>
+
+          {/* PESEL and Address */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="add-pesel">{t("add.fields.pesel")}</Label>
+              <Input
+                id="add-pesel"
+                value={pesel}
+                onChange={(e) =>
+                  setPesel(e.target.value.replace(/\D/g, "").slice(0, 11))
+                }
+                placeholder={t("add.placeholders.pesel")}
+                maxLength={11}
+                disabled={saving}
+              />
+            </div>
 
             <div className="space-y-2 flex-1">
-              <Label htmlFor="add-email">{t("add.fields.email")}</Label>
+              <Label htmlFor="add-address">{t("add.fields.address")}</Label>
               <Input
-                id="add-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("add.placeholders.email")}
+                id="add-address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={t("add.placeholders.address")}
                 disabled={saving}
               />
             </div>
           </div>
 
-          {/* Address */}
-          <div className="space-y-2">
-            <Label htmlFor="add-address">{t("add.fields.address")}</Label>
-            <Input
-              id="add-address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder={t("add.placeholders.address")}
-              disabled={saving}
-            />
+          {/* Password and Confirm Password */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="add-password">
+                {t("add.fields.password")}{" "}
+                <span className="text-destructive">*</span>
+              </Label>
+              <div className="relative">
+                <Input
+                  id="add-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={t("add.placeholders.password")}
+                  disabled={saving}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="add-confirm-password">
+                {t("add.fields.confirmPassword")}{" "}
+                <span className="text-destructive">*</span>
+              </Label>
+              <div className="relative">
+                <Input
+                  id="add-confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder={t("add.placeholders.confirmPassword")}
+                  disabled={saving}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  tabIndex={-1}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -255,7 +363,11 @@ export function AddPatientDialog({
           >
             {t("add.buttons.cancel")}
           </Button>
-          <Button onClick={handleSave} disabled={saving}>
+          <Button
+            onClick={handleSave}
+            disabled={saving}
+            className="bg-brand hover:!bg-brand hover:brightness-125 text-white"
+          >
             {saving ? t("add.buttons.saving") : t("add.buttons.addPatient")}
           </Button>
         </DialogFooter>
@@ -263,4 +375,3 @@ export function AddPatientDialog({
     </Dialog>
   );
 }
-

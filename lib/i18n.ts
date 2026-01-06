@@ -13,6 +13,12 @@ import enPatients from '../public/locales/en/patients.json';
 import plPatients from '../public/locales/pl/patients.json';
 import enVisits from '../public/locales/en/visits.json';
 import plVisits from '../public/locales/pl/visits.json';
+import enDashboard from '../public/locales/en/dashboard.json';
+import plDashboard from '../public/locales/pl/dashboard.json';
+import enPatientVisits from '../public/locales/en/patientVisits.json';
+import plPatientVisits from '../public/locales/pl/patientVisits.json';
+import enPatientDashboard from '../public/locales/en/patientDashboard.json';
+import plPatientDashboard from '../public/locales/pl/patientDashboard.json';
 
 const resources = {
   en: {
@@ -22,6 +28,9 @@ const resources = {
     settings: enSettings,
     patients: enPatients,
     visits: enVisits,
+    dashboard: enDashboard,
+    patientVisits: enPatientVisits,
+    patientDashboard: enPatientDashboard,
   },
   pl: {
     common: plCommon,
@@ -30,6 +39,9 @@ const resources = {
     settings: plSettings,
     patients: plPatients,
     visits: plVisits,
+    dashboard: plDashboard,
+    patientVisits: plPatientVisits,
+    patientDashboard: plPatientDashboard,
   },
 };
 

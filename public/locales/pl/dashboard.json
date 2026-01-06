@@ -1,0 +1,70 @@
+{
+  "greeting": {
+    "morning": "Dzień dobry",
+    "afternoon": "Dzień dobry",
+    "evening": "Dobry wieczór"
+  },
+  "quickActions": {
+    "title": "Szybkie akcje",
+    "addPatient": {
+      "title": "Dodaj pacjenta",
+      "description": "Zarejestruj nowego pacjenta"
+    },
+    "newVisit": {
+      "title": "Nowa wizyta",
+      "description": "Zarejestruj wizytę pacjenta"
+    },
+    "viewPatients": {
+      "title": "Pokaż pacjentów",
+      "description": "Przeglądaj wszystkich pacjentów"
+    },
+    "viewVisits": {
+      "title": "Pokaż wizyty",
+      "description": "Zarządzaj wizytami pacjentów"
+    },
+    "settings": {
+      "title": "Ustawienia",
+      "description": "Zarządzaj swoim kontem"
+    },
+    "walkthrough": {
+      "title": "Przewodnik",
+      "description": "Zobacz przewodnik po aplikacji"
+    }
+  },
+  "upcomingVisits": {
+    "title": "Nadchodzące wizyty",
+    "viewVisit": "Zobacz",
+    "noVisits": {
+      "title": "Brak nadchodzących wizyt",
+      "description": "Nie masz zaplanowanych wizyt."
+    }
+  },
+  "helpfulInfo": {
+    "title": "Przydatne informacje",
+    "profilePicture": {
+      "title": "Zdjęcie profilowe",
+      "description": "Możesz zmienić swoje zdjęcie profilowe na stronie {{link}}Ustawienia{{/link}}. Prześlij obraz, aby spersonalizować swoje konto."
+    },
+    "diagnosisAssistant": {
+      "title": "Asystent diagnostyczny",
+      "description": "Podczas rejestrowania wizyty system używa AI, aby sugerować możliwe diagnozy na podstawie wprowadzonych objawów. Przejrzyj i wybierz najbardziej odpowiednią diagnozę."
+    },
+    "patientManagement": {
+      "title": "Zarządzanie pacjentami",
+      "description": "Dodaj nowych pacjentów, klikając \"Dodaj pacjenta\" powyżej, lub przejdź do strony {{link}}Pacjenci{{/link}}, aby przeglądać i zarządzać wszystkimi zarejestrowanymi pacjentami."
+    },
+    "visitRecords": {
+      "title": "Zapisy wizyt",
+      "description": "Rejestruj wizyty pacjentów z objawami, diagnozami i notatkami. Wszystkie zapisy wizyt są bezpiecznie przechowywane i można do nich uzyskać dostęp ze strony {{link}}Wizyty{{/link}}."
+    }
+  },
+  "errors": {
+    "loading": "Ładowanie...",
+    "profileNotFound": {
+      "title": "Błąd",
+      "description": "Nie znaleziono profilu użytkownika. Skontaktuj się z pomocą techniczną."
+    }
+  }
+}
+
+

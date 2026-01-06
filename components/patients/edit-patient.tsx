@@ -42,6 +42,7 @@ export function EditPatientDialog({
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [pesel, setPesel] = React.useState("");
 
   // Reset form when patient changes
   React.useEffect(() => {
@@ -57,6 +58,7 @@ export function EditPatientDialog({
       setPhone(patient.phone || "");
       setEmail(patient.email || "");
       setAddress(patient.address || "");
+      setPesel(patient.pesel || "");
     }
   }, [patient]);
 
@@ -83,6 +85,14 @@ export function EditPatientDialog({
     // Validate phone format if provided (basic validation)
     if (phone && !/^[0-9+\-\s().]{6,}$/.test(phone)) {
       toast.error(t("edit.errors.invalidPhone"));
+      return;
+    }
+
+    // Validate PESEL format if provided (11 digits)
+    if (pesel && !/^\d{11}$/.test(pesel)) {
+      toast.error(
+        t("edit.errors.invalidPesel", "PESEL must be exactly 11 digits")
+      );
       return;
     }
 
@@ -114,6 +124,12 @@ export function EditPatientDialog({
         updateData.address = null;
       }
 
+      if (pesel.trim()) {
+        updateData.pesel = pesel.trim();
+      } else {
+        updateData.pesel = null;
+      }
+
       const { error } = await supabase
         .from("patients")
         .update(updateData)
@@ -122,11 +138,40 @@ export function EditPatientDialog({
       if (error) {
         console.error("Update error:", error);
         toast.error(t("edit.errors.updateFailed"));
-      } else {
-        toast.success(t("edit.success.patientUpdated"));
-        onPatientUpdated?.();
-        onOpenChange(false);
+        return;
       }
+
+      // If patient has a linked user account, also update the users table
+      if (patient.user_id) {
+        console.log("Syncing user profile for user_id:", patient.user_id);
+        const { error: userError, data: userData } = await supabase
+          .from("users")
+          .update({
+            name: firstName.trim(),
+            surname: lastName.trim(),
+          })
+          .eq("user_id", patient.user_id)
+          .select();
+
+        if (userError) {
+          console.error("Error updating linked user:", userError);
+          // Don't fail the whole operation, just log the warning
+          toast.warning(
+            t(
+              "edit.warnings.userUpdateFailed",
+              "Patient updated, but linked user account could not be synced"
+            )
+          );
+        } else {
+          console.log("User profile synced successfully:", userData);
+        }
+      } else {
+        console.log("No linked user_id for this patient");
+      }
+
+      toast.success(t("edit.success.patientUpdated"));
+      onPatientUpdated?.();
+      onOpenChange(false);
     } catch (error) {
       console.error("Error saving patient:", error);
       toast.error(t("edit.errors.saveError"));
@@ -240,16 +285,41 @@ export function EditPatientDialog({
             </div>
           </div>
 
-          {/* Address */}
-          <div className="space-y-2">
-            <Label htmlFor="address">{t("edit.fields.address")}</Label>
-            <Input
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder={t("edit.placeholders.address")}
-              disabled={saving}
-            />
+          {/* PESEL and Address */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="pesel">{t("edit.fields.pesel", "PESEL")}</Label>
+              <Input
+                id="pesel"
+                value={pesel}
+                onChange={(e) =>
+                  setPesel(e.target.value.replace(/\D/g, "").slice(0, 11))
+                }
+                placeholder={t(
+                  "edit.placeholders.pesel",
+                  "11-digit national ID"
+                )}
+                disabled={saving}
+                maxLength={11}
+              />
+              {pesel && pesel.length !== 11 && (
+                <p className="text-xs text-muted-foreground">
+                  {t("edit.hints.pesel", "PESEL must be 11 digits")} (
+                  {pesel.length}/11)
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2 flex-1">
+              <Label htmlFor="address">{t("edit.fields.address")}</Label>
+              <Input
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={t("edit.placeholders.address")}
+                disabled={saving}
+              />
+            </div>
           </div>
         </div>
 
@@ -261,7 +331,11 @@ export function EditPatientDialog({
           >
             {t("edit.buttons.cancel")}
           </Button>
-          <Button onClick={handleSave} disabled={saving}>
+          <Button
+            onClick={handleSave}
+            disabled={saving}
+            className="bg-brand hover:!bg-brand hover:brightness-125 text-white"
+          >
             {saving ? t("edit.buttons.saving") : t("edit.buttons.saveChanges")}
           </Button>
         </DialogFooter>

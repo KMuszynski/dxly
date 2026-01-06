@@ -12,7 +12,13 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
+import {
+  ArrowUpDown,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  Plus,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
 
@@ -22,6 +28,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -33,13 +40,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { supabase } from "@/lib/supabase";
 import { EditPatientDialog } from "./edit-patient";
 import { AddPatientDialog } from "./add-patient";
-import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 export type Patient = {
   id: string;
+  user_id: string | null; // Linked auth user (for patient users)
   first_name: string;
   last_name: string;
   date_of_birth: string;
@@ -47,11 +63,18 @@ export type Patient = {
   phone: string | null;
   email: string | null;
   address: string | null;
+  pesel: string | null;
   created_at: string;
   updated_at: string;
 };
 
-export function PatientsDataTable() {
+interface PatientsDataTableProps {
+  autoOpenAddDialog?: boolean;
+}
+
+export function PatientsDataTable({
+  autoOpenAddDialog = false,
+}: PatientsDataTableProps) {
   const { t } = useTranslation("patients");
   const [data, setData] = React.useState<Patient[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -90,10 +113,58 @@ export function PatientsDataTable() {
     fetchPatients();
   }, [fetchPatients]);
 
+  // Auto-open add dialog if prop is set
+  React.useEffect(() => {
+    if (autoOpenAddDialog) {
+      setAddDialogOpen(true);
+    }
+  }, [autoOpenAddDialog]);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [patientToDelete, setPatientToDelete] = React.useState<Patient | null>(
+    null
+  );
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
   const handleEditPatient = React.useCallback((patient: Patient) => {
     setSelectedPatient(patient);
     setEditDialogOpen(true);
   }, []);
+
+  const handleDeletePatient = React.useCallback((patient: Patient) => {
+    setPatientToDelete(patient);
+    setDeleteDialogOpen(true);
+  }, []);
+
+  const confirmDeletePatient = async () => {
+    if (!patientToDelete) return;
+
+    try {
+      setIsDeleting(true);
+
+      // Call API route to delete patient and their auth user
+      const response = await fetch(`/api/patients/${patientToDelete.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.error("Error deleting patient:", data.error);
+        toast.error(t("delete.errors.deleteFailed"));
+        return;
+      }
+
+      toast.success(t("delete.success.patientDeleted"));
+      fetchPatients();
+    } catch (error) {
+      console.error("Error deleting patient:", error);
+      toast.error(t("delete.errors.deleteError"));
+    } finally {
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
+      setPatientToDelete(null);
+    }
+  };
 
   const handlePatientUpdated = () => {
     fetchPatients();
@@ -131,6 +202,46 @@ export function PatientsDataTable() {
         accessorFn: (row) => `${row.first_name} ${row.last_name}`,
       },
       {
+        accessorKey: "pesel",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              {t("table.pesel")}
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          const pesel = row.original.pesel;
+          return <div className="text-muted-foreground">{pesel || "—"}</div>;
+        },
+      },
+      {
+        accessorKey: "email",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              {t("table.email")}
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          const email = row.original.email;
+          return <div className="text-muted-foreground">{email || "—"}</div>;
+        },
+      },
+      {
         id: "actions",
         enableHiding: false,
         header: () => <div className="text-right"></div>,
@@ -152,6 +263,14 @@ export function PatientsDataTable() {
                     <Pencil className="mr-2 h-4 w-4" />
                     {t("table.editPatient")}
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => handleDeletePatient(patient)}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    {t("table.deletePatient")}
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -159,21 +278,39 @@ export function PatientsDataTable() {
         },
       },
     ],
-    [t, handleEditPatient]
+    [t, handleEditPatient, handleDeletePatient]
   );
+
+  const [globalFilter, setGlobalFilter] = React.useState("");
 
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, columnId, filterValue) => {
+      const patient = row.original;
+      const searchValue = filterValue.toLowerCase();
+      const fullName =
+        `${patient.first_name} ${patient.last_name}`.toLowerCase();
+      const pesel = (patient.pesel || "").toLowerCase();
+      const email = (patient.email || "").toLowerCase();
+
+      return (
+        fullName.includes(searchValue) ||
+        pesel.includes(searchValue) ||
+        email.includes(searchValue)
+      );
+    },
     state: {
       sorting,
       columnFilters,
+      globalFilter,
     },
   });
 
@@ -192,18 +329,19 @@ export function PatientsDataTable() {
       <div className="flex items-center justify-between py-4">
         <Input
           placeholder={t("table.filterPlaceholder")}
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
+          className="max-w-sm bg-white"
         />
-        <Button onClick={() => setAddDialogOpen(true)}>
+        <Button
+          onClick={() => setAddDialogOpen(true)}
+          className="bg-brand text-white hover:!bg-brand hover:brightness-125"
+        >
           <Plus className="mr-2 h-4 w-4" />
           {t("table.addPatient")}
         </Button>
       </div>
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-md border bg-white">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -288,6 +426,40 @@ export function PatientsDataTable() {
         onOpenChange={setAddDialogOpen}
         onPatientAdded={handlePatientAdded}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("delete.title")}</DialogTitle>
+            <DialogDescription>
+              {t("delete.description", {
+                name: patientToDelete
+                  ? `${patientToDelete.first_name} ${patientToDelete.last_name}`
+                  : "",
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={isDeleting}
+            >
+              {t("delete.buttons.cancel")}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDeletePatient}
+              disabled={isDeleting}
+            >
+              {isDeleting
+                ? t("delete.buttons.deleting")
+                : t("delete.buttons.delete")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

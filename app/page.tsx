@@ -126,10 +126,11 @@ export default function Home() {
 
         {/* Hero section */}
         <section
-          className="relative pb-12 mt-16 bg-transparent"
+          className="relative pb-12 mt-16 bg-transparent flex justify-center pt-16"
           style={{ minHeight: "calc(100vh - 4rem)" }}
         >
-          <div className="relative z-20 flex flex-col items-start justify-center h-full text-center px-10 pt-16 max-w-6xl">
+          {/* <div className="relative z-20 flex flex-col items-start justify-center h-full text-center px-10 pt-16 max-w-6xl border border-white/10 bg-white/5 p-8 shadow-lg backdrop-blur-md rounded-2xl"> */}
+          <div className="flex flex-col items-start justify-center h-full text-center px-10 pt-16 max-w-5xl border border-white/5 bg-black/5 p-8 shadow-lg backdrop-blur-md rounded-2xl">
             <h1
               ref={heroTitleRef.ref}
               className={`text-5xl md:text-7xl font-bold text-white mb-4 text-left animate-fade-in-up ${
@@ -140,14 +141,14 @@ export default function Home() {
             </h1>
             <p
               ref={heroSubtitleRef.ref}
-              className={`text-xl text-gray-200 mb-4 max-w-4xl text-justify animate-fade-in-up ${
+              className={`text-xl text-gray-200 mb-4 max-w-5xl text-justify animate-fade-in-up ${
                 heroSubtitleRef.isIntersecting ? "animate-visible" : ""
               }`}
               style={{ transitionDelay: "0.2s" }}
             >
               {t("hero.subtitle")}
             </p>
-            <div className="w-full flex justify-end max-w-4xl">
+            <div className="w-full flex justify-end pt-8">
               <button
                 onClick={() => router.push("/login")}
                 className="border border-gray-600 bg-[#5a189a] hover:bg-[#5a189a]/90 text-white px-4 py-2 rounded-md flex items-center gap-2"
@@ -156,6 +157,7 @@ export default function Home() {
               </button>
             </div>
           </div>
+
           <button
             onClick={() => scrollToSection("features")}
             className="hidden md:block absolute bottom-6 right-1/2 transform translate-x-1/2 animate-pulse hover:animate-none hover:opacity-100 transition-opacity duration-1000"
@@ -183,6 +185,31 @@ export default function Home() {
               zIndex: 0,
             }}
           />
+          {/* Demo Section */}
+          <section className="relative pb-12 mt-24 z-10 px-4 max-w-5xl mx-auto">
+            <h1
+              ref={featuresTitleRef.ref}
+              className={`text-5xl font-bold text-white mb-8 text-center animate-fade-in-up ${
+                featuresTitleRef.isIntersecting ? "animate-visible" : ""
+              }`}
+            >
+              {t("demo.title")}
+            </h1>
+
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source src="/landingPage/demo.webm" type="video/webm" />
+                {/* Fallback message if the video fails */}
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </section>
           {/* Features section */}
           <section
             id="features"

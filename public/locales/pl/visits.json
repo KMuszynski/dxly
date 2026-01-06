@@ -3,7 +3,9 @@
   "subtitle": "Przeglądaj i zarządzaj wizytami pacjentów",
   "table": {
     "patientName": "Imię i nazwisko pacjenta",
+    "patientPesel": "PESEL",
     "visitDate": "Data wizyty",
+    "status": "Status",
     "notes": "Notatki",
     "noNotes": "Brak notatek",
     "unknownPatient": "Nieznany pacjent",
@@ -11,12 +13,52 @@
     "actions": "Akcje",
     "editVisit": "Edytuj wizytę",
     "addVisit": "Dodaj wizytę",
+    "scheduleVisit": "Zaplanuj wizytę",
+    "startVisit": "Rozpocznij wizytę",
+    "continueVisit": "Kontynuuj wizytę",
+    "deleteVisit": "Usuń wizytę",
+    "confirmDelete": "Czy na pewno chcesz usunąć tę wizytę? Tej operacji nie można cofnąć.",
+    "visitDeleted": "Wizyta została usunięta",
+    "deleteError": "Nie udało się usunąć wizyty",
+    "deleting": "Usuwanie...",
     "loading": "Ładowanie wizyt...",
-    "filterPlaceholder": "Filtruj po imieniu pacjenta...",
+    "filterPlaceholder": "Filtruj po imieniu lub PESEL...",
     "noResults": "Brak wyników.",
     "showing": "Wyświetlanie {{count}} z {{total}} wizyty(t)",
     "previous": "Poprzednia",
     "next": "Następna"
+  },
+  "status": {
+    "scheduled": "Zaplanowana",
+    "checkedIn": "Zameldowany",
+    "inProgress": "W trakcie",
+    "completed": "Zakończona",
+    "cancelled": "Anulowana"
+  },
+  "schedule": {
+    "title": "Zaplanuj wizytę",
+    "description": "Zaplanuj wizytę dla pacjenta. Pacjent będzie mógł wprowadzić swoje objawy przed wizytą.",
+    "patient": "Pacjent",
+    "doctor": "Lekarz",
+    "date": "Data",
+    "time": "Godzina",
+    "notes": "Notatki (opcjonalnie)",
+    "notesPlaceholder": "Powód wizyty, specjalne instrukcje...",
+    "searchPatient": "Szukaj po imieniu lub emailu...",
+    "selectDoctor": "Wybierz lekarza...",
+    "selected": "Wybrano",
+    "noPatients": "Nie znaleziono pacjentów",
+    "loadingDoctors": "Ładowanie lekarzy...",
+    "noDoctors": "Brak dostępnych lekarzy",
+    "noDoctorsHint": "Nie znaleziono lekarzy. Uruchom migrację 009 aby naprawić uprawnienia.",
+    "cancel": "Anuluj",
+    "submit": "Zaplanuj wizytę",
+    "scheduling": "Planowanie...",
+    "success": "Wizyta została pomyślnie zaplanowana!",
+    "error": "Nie udało się zaplanować wizyty",
+    "validation": {
+      "required": "Proszę wybrać pacjenta i lekarza"
+    }
   },
   "add": {
     "title": "Dodaj nową wizytę",
@@ -25,11 +67,12 @@
       "patient": {
         "title": "Pacjent",
         "searchLabel": "Wyszukaj pacjenta",
-        "searchPlaceholder": "Wyszukaj po imieniu...",
+        "searchPlaceholder": "Wyszukaj po imieniu, PESEL lub emailu...",
         "addNew": "Dodaj nowego pacjenta",
         "loading": "Ładowanie pacjentów...",
         "noResults": "Nie znaleziono pacjentów",
-        "noPatients": "Brak dostępnych pacjentów"
+        "noPatients": "Brak dostępnych pacjentów",
+        "peselLabel": "PESEL:"
       },
       "symptoms": {
         "title": "Objawy",
@@ -41,29 +84,49 @@
         "durationLabel": "Czas trwania",
         "durationPlaceholder": "np. 3 dni, 2 tygodnie",
         "notesLabel": "Notatki",
-        "notesPlaceholder": "Dodatkowe notatki o tym objawie"
+        "notesPlaceholder": "Dodatkowe notatki o tym objawie",
+        "addFirstSymptom": "Dodaj pierwszy objaw",
+        "loading": "Ładowanie objawów...",
+        "errorTitle": "Błąd ładowania objawów",
+        "errorBackendHint": "Upewnij się, że backend API działa pod adresem",
+        "followUpQuestions": "pytań uzupełniających",
+        "noSuggestionsFound": "Nie znaleziono sugestii. Możesz wpisać własny objaw.",
+        "select": "Wybierz..."
       },
       "diagnosis": {
         "title": "Diagnoza",
         "add": "Dodaj diagnozę",
+        "addThis": "Dodaj tę diagnozę",
         "noDiagnoses": "Brak dodanych diagnoz",
         "diagnosis": "Diagnoza",
         "diagnosisLabel": "Diagnoza",
-        "diagnosisPlaceholder": "Wprowadź diagnozę"
-      },
-      "diagnosisDetails": {
-        "title": "Szczegóły",
-        "noDiagnoses": "Brak diagnoz do dodania szczegółów",
-        "diagnosis": "Diagnoza",
+        "diagnosisPlaceholder": "Wprowadź diagnozę",
         "notesLabel": "Notatki",
-        "notesPlaceholder": "Dodaj notatki lub szczegóły dotyczące tej diagnozy"
+        "notesPlaceholder": "Dodatkowe notatki o tej diagnozie...",
+        "suggestionsTitle": "Sugestie diagnoz wspierane przez system",
+        "suggestionsSubtitle": "Kliknij diagnozę, aby rozwinąć szczegóły",
+        "basedOnSymptoms": "Na podstawie {{count}} objaw(ów) z danymi uzupełniającymi",
+        "analyzing": "Analizowanie objawów i danych uzupełniających...",
+        "confidence": "{{value}}% pewności",
+        "matched": "{{count}} dopasowanych",
+        "toCheck": "{{count}} do sprawdzenia",
+        "clickToExpand": "Kliknij, aby zobaczyć szczegóły",
+        "strongMatches": "Silne dopasowania:",
+        "partialMatches": "Częściowe dopasowania:",
+        "supportiveFindings": "Wspierające ustalenia:",
+        "considerChecking": "Rozważ sprawdzenie:",
+        "noSuggestionsFound": "Nie znaleziono sugestii diagnoz. Możesz wprowadzić diagnozę ręcznie."
       },
       "notes": {
         "title": "Notatki",
         "visitDate": "Data wizyty",
         "visitTime": "Godzina wizyty",
         "notesLabel": "Notatki z wizyty",
-        "notesPlaceholder": "Wprowadź ogólne notatki o tej wizycie..."
+        "notesPlaceholder": "Wprowadź ogólne notatki o tej wizycie...",
+        "generating": "Generowanie...",
+        "generateSuccess": "Notatki wygenerowane pomyślnie",
+        "generateError": "Nie udało się wygenerować notatek",
+        "generateNoData": "Dodaj objawy lub diagnozy, aby wygenerować notatki"
       }
     },
     "buttons": {
@@ -71,7 +134,8 @@
       "previous": "Poprzednia",
       "next": "Dalej",
       "saving": "Zapisywanie...",
-      "complete": "Zakończ wizytę"
+      "complete": "Zakończ wizytę",
+      "generateNotes": "Generuj notatki z AI"
     },
     "errors": {
       "patientRequired": "Proszę wybrać pacjenta",
@@ -82,7 +146,8 @@
       "saveError": "Wystąpił błąd podczas zapisywania wizyty"
     },
     "success": {
-      "visitAdded": "Wizyta została pomyślnie utworzona"
+      "visitAdded": "Wizyta została pomyślnie utworzona",
+      "visitCompleted": "Wizyta została zakończona pomyślnie"
     }
   },
   "edit": {
@@ -94,7 +159,8 @@
       "visitTime": "Godzina wizyty",
       "notes": "Notatki z wizyty",
       "symptoms": "Objawy",
-      "diagnoses": "Diagnozy"
+      "diagnoses": "Diagnozy",
+      "status": "Status"
     },
     "placeholders": {
       "notes": "Wprowadź notatki z wizyty..."
@@ -109,12 +175,19 @@
       "title": "Objaw",
       "duration": "Czas trwania",
       "notes": "Notatki",
-      "noSymptoms": "Brak zarejestrowanych objawów"
+      "noSymptoms": "Brak zarejestrowanych objawów",
+      "patientEntered": "Pacjent",
+      "clinicEntered": "Klinika",
+      "details": "Szczegóły"
     },
     "diagnoses": {
       "title": "Diagnoza",
       "notes": "Notatki",
-      "noDiagnoses": "Brak zarejestrowanych diagnoz"
+      "noDiagnoses": "Brak zarejestrowanych diagnoz",
+      "addNew": "Dodaj diagnozę",
+      "add": "Dodaj",
+      "diagnosisPlaceholder": "Wprowadź diagnozę...",
+      "notesPlaceholder": "Notatki o diagnozie..."
     },
     "buttons": {
       "cancel": "Anuluj",
@@ -126,11 +199,21 @@
       "visitTimeRequired": "Godzina wizyty jest wymagana",
       "updateFailed": "Nie udało się zaktualizować wizyty. Spróbuj ponownie.",
       "saveError": "Wystąpił błąd podczas zapisywania wizyty",
-      "fetchFailed": "Nie udało się załadować szczegółów wizyty. Spróbuj ponownie."
+      "fetchFailed": "Nie udało się załadować szczegółów wizyty. Spróbuj ponownie.",
+      "diagnosisFailed": "Nie udało się dodać diagnozy",
+      "diagnosisRemoveFailed": "Nie udało się usunąć diagnozy"
     },
     "success": {
-      "visitUpdated": "Wizyta została pomyślnie zaktualizowana"
+      "visitUpdated": "Wizyta została pomyślnie zaktualizowana",
+      "diagnosisAdded": "Diagnoza dodana",
+      "diagnosisRemoved": "Diagnoza usunięta"
+    }
+  },
+  "view": {
+    "title": "Szczegóły wizyty",
+    "description": "Zobacz szczegóły tej wizyty",
+    "buttons": {
+      "close": "Zamknij"
     }
   }
 }
-

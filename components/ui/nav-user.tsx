@@ -7,6 +7,8 @@ import {
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -36,6 +38,7 @@ export function NavUser({
   };
   onLogout?: () => void;
 }) {
+  const { t } = useTranslation("common");
   const { isMobile } = useSidebar();
 
   return (
@@ -83,7 +86,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogout}>
               <IconLogout />
-              Log out
+              {t("nav.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
