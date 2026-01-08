@@ -12,7 +12,15 @@
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/diagnose",
+      "destination": "backend/json-based/app.py"
+    },
+    {
+      "source": "/api/symptoms",
+      "destination": "backend/json-based/app.py"
+    },
+    {
+      "source": "/api/health",
       "destination": "backend/json-based/app.py"
     }
   ]
