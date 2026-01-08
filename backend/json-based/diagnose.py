@@ -20,8 +20,11 @@ from typing import Any
 
 def load_json(filename: str) -> dict:
     """Load JSON file from the same directory as this script."""
-    base_path = Path(__file__).parent
-    with open(base_path / filename, "r", encoding="utf-8") as f:
+    # This ensures it finds the JSON even when called from Vercel's root
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_path, filename)
+    
+    with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 

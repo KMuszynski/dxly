@@ -41,7 +41,10 @@ DONE:
 
 - add a walkthrough: a button on the dashboard that will walk the users through the app [DONE]
 
-TODO:
 - write about the desiese/symptom model in the readme: Otolaryngology 25, Gastrointestinal 25, General / Infectious 25, Cardio / Respiratory 25
-- add more desieses/symptoms to database
+add more desieses/symptoms to database [DONE]
+
+
+TODO:
+
 

@@ -246,5 +246,249 @@
         "options": ["normal", "reduced", "completely_gone"]
       }
     ]
+  },
+  "Abdominal Pain": {
+    "display_name": "Abdominal Pain",
+    "global_follow_ups": [
+      {
+        "key": "intensity",
+        "label": "Pain Scale (1-10)",
+        "type": "range",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "location",
+        "label": "Location",
+        "type": "enum",
+        "options": [
+          "epigastric",
+          "right_upper_quadrant",
+          "left_upper_quadrant",
+          "right_lower_quadrant",
+          "left_lower_quadrant",
+          "periumbilical",
+          "diffuse"
+        ]
+      },
+      {
+        "key": "character",
+        "label": "Character of Pain",
+        "type": "enum",
+        "options": ["crampy", "sharp_localized", "burning", "dull_ache"]
+      },
+      {
+        "key": "relieved_by",
+        "label": "Relieved by",
+        "type": "enum",
+        "options": [
+          "bowel_movement",
+          "eating",
+          "antacids",
+          "leaning_forward",
+          "none"
+        ]
+      },
+      {
+        "key": "triggered_by",
+        "label": "Triggered by",
+        "type": "enum",
+        "options": ["fatty_meals", "alcohol", "stress", "empty_stomach", "none"]
+      }
+    ]
+  },
+  "Bowel Habits": {
+    "display_name": "Change in Bowel Habits",
+    "unique_follow_ups": [
+      {
+        "key": "stool_consistency",
+        "label": "Stool Type",
+        "type": "enum",
+        "options": [
+          "watery_diarrhea",
+          "constipation_hard",
+          "bloody_maroon",
+          "black_tarry_melena",
+          "pale_greasy"
+        ]
+      },
+      {
+        "key": "urgency",
+        "label": "Urgency/Tenesmus",
+        "type": "enum",
+        "options": ["normal", "urgent", "painful_straining"]
+      }
+    ]
+  },
+  "Nausea/Vomiting": {
+    "display_name": "Nausea/Vomiting",
+    "unique_follow_ups": [
+      {
+        "key": "vomitus_content",
+        "label": "Content",
+        "type": "enum",
+        "options": ["food", "bile_yellow", "blood_red", "coffee_grounds"]
+      }
+    ]
+  },
+  "Rash": {
+    "display_name": "Skin Rash",
+    "global_follow_ups": [
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "appearance",
+        "label": "What does it look like?",
+        "type": "enum",
+        "options": [
+          "target_bullseye",
+          "sandpaper_texture",
+          "vesicles_blisters",
+          "flat_red_spots",
+          "pustules"
+        ]
+      },
+      {
+        "key": "location",
+        "label": "Where did it start?",
+        "type": "enum",
+        "options": [
+          "trunk_chest",
+          "extremities_limbs",
+          "face",
+          "localized_bite_site"
+        ]
+      }
+    ]
+  },
+  "Systemic Symptoms": {
+    "display_name": "Body-wide Symptoms",
+    "unique_follow_ups": [
+      {
+        "key": "fatigue_level",
+        "label": "Fatigue",
+        "type": "enum",
+        "options": ["mild", "moderate", "debilitating"]
+      },
+      {
+        "key": "joint_muscle_pain",
+        "label": "Aches",
+        "type": "enum",
+        "options": [
+          "none",
+          "joint_stiffness",
+          "muscle_aches",
+          "bone_breaking_pain"
+        ]
+      }
+    ]
+  },
+  "History/Exposure": {
+    "display_name": "Recent History",
+    "unique_follow_ups": [
+      {
+        "key": "travel",
+        "label": "Recent Travel",
+        "type": "enum",
+        "options": ["tropical_forest", "international_city", "none"]
+      },
+      {
+        "key": "exposure",
+        "label": "Exposure to",
+        "type": "enum",
+        "options": [
+          "ticks",
+          "mosquitoes",
+          "sick_contacts",
+          "unpasteurized_dairy",
+          "none"
+        ]
+      }
+    ]
+  },
+  "Chest Pain": {
+    "display_name": "Chest Pain",
+    "global_follow_ups": [
+      {
+        "key": "intensity",
+        "label": "Severity (1-10)",
+        "type": "range",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "key": "onset",
+        "label": "Onset",
+        "type": "enum",
+        "options": ["sudden", "gradual"]
+      }
+    ],
+    "unique_follow_ups": [
+      {
+        "key": "character",
+        "label": "What does the pain feel like?",
+        "type": "enum",
+        "options": [
+          "pressure_heaviness",
+          "sharp_stabbing",
+          "tearing",
+          "burning"
+        ]
+      },
+      {
+        "key": "radiation",
+        "label": "Does the pain move anywhere?",
+        "type": "enum",
+        "options": ["left_arm_jaw", "back_between_shoulders", "none"]
+      },
+      {
+        "key": "aggravated_by",
+        "label": "Worsened by",
+        "type": "enum",
+        "options": ["exertion", "deep_breath", "lying_flat", "none"]
+      }
+    ]
+  },
+  "Shortness of Breath": {
+    "display_name": "Shortness of Breath",
+    "unique_follow_ups": [
+      {
+        "key": "orthopnea",
+        "label": "Do you need to prop yourself up with pillows to breathe?",
+        "type": "enum",
+        "options": ["yes", "no"]
+      },
+      {
+        "key": "associated_sounds",
+        "label": "Breathing sounds",
+        "type": "enum",
+        "options": ["wheezing", "stridor_high_pitched", "none"]
+      }
+    ]
+  },
+  "Peripheral Signs": {
+    "display_name": "Other Body Signs",
+    "unique_follow_ups": [
+      {
+        "key": "leg_swelling",
+        "label": "Leg Swelling",
+        "type": "enum",
+        "options": ["none", "unilateral_one_side", "bilateral_both_sides"]
+      }
+    ]
   }
 }

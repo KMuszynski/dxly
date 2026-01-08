@@ -8,8 +8,18 @@ Endpoints:
 - GET  /api/health        - Health check endpoint
 """
 
+import os
+import sys
+
+# Get the absolute path of the current directory (backend/json-based)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Add it to sys.path so 'import diagnose' works
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+# Now this import will find the file sitting right next to app.py
 from diagnose import (
     diagnose,
     get_differential_diagnosis,
