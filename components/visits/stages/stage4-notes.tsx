@@ -32,7 +32,6 @@ export function VisitStage4Notes({
   const [saving, setSaving] = React.useState(false);
   const [generating, setGenerating] = React.useState(false);
 
-  // --- FIX START ---
   React.useEffect(() => {
     const loadMissingPatientData = async () => {
       // 1. Check if we have an ID but the AI-required data is missing
@@ -67,7 +66,6 @@ export function VisitStage4Notes({
 
     loadMissingPatientData();
   }, [formData.patientId, formData.patient, setFormData]);
-  // --- FIX END ---
 
   const handleSave = async () => {
     if (!formData.patientId) {
