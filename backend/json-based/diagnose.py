@@ -20,12 +20,21 @@ from typing import Any
 
 def load_json(filename: str) -> dict:
     """Load JSON file from the same directory as this script."""
-    # This ensures it finds the JSON even when called from Vercel's root
+    # Get the directory where diagnose.py actually lives
+    # This is the most reliable way on Vercel
     base_path = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_path, filename)
     
-    with open(file_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    # Optional: print to Vercel logs for debugging
+    print(f"DEBUG: Attempting to load: {file_path}")
+    
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"ERROR: File not found at {file_path}")
+        # Return a structure that won't crash the next step
+        return {}
 
 
 def load_disease_profiles() -> dict:
