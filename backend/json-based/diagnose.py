@@ -13,6 +13,7 @@ Scoring Logic:
 5. Prevalence acts as a Bayesian prior, adjusting final scores
 """
 
+import os
 import json
 from pathlib import Path
 from typing import Any
