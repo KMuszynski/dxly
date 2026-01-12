@@ -223,10 +223,14 @@ export function VisitStage4Notes({
 
     setGenerating(true);
     try {
+      // Get the current session to include the auth token
+      const { data: { session } } = await supabase.auth.getSession();
+      
       const response = await fetch("/api/generate-notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(session?.access_token && { "Authorization": `Bearer ${session.access_token}` }),
         },
         body: JSON.stringify({
           patientName: formData.patientName,

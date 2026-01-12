@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase-server";
+import { createClient } from "@supabase/supabase-js";
 
 // Types for visit data
 interface VisitSymptom {
@@ -256,16 +256,29 @@ export async function POST(request: NextRequest) {
   try {
     const body: GenerateNotesRequest = await request.json();
 
-    // 1. Initialize Supabase Client using the shared helper
-    const supabase = await createClient();
-
-    // 2. AUTHENTICATION CHECK: This is what was missing
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    // If there is no user or an error, block the request
-    if (authError || !user) {
+    // 1. AUTHENTICATION CHECK: Verify the Bearer token from Authorization header
+    const authHeader = request.headers.get("Authorization");
+    
+    if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(
         { error: "Unauthorized: Please log in to generate clinical notes." },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+    
+    // Create a Supabase client and verify the token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized: Invalid or expired session." },
         { status: 401 }
       );
     }
