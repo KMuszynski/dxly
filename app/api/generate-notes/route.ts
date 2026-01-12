@@ -257,8 +257,31 @@ export async function POST(request: NextRequest) {
   try {
     const body: GenerateNotesRequest = await request.json();
 
-    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { cookies: await cookies() });
+    // 1. Initialize Supabase Client
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) { return cookieStore.get(name)?.value },
+          set(name: string, value: string, options: any) { cookieStore.set({ name, value, ...options }) },
+          remove(name: string, options: any) { cookieStore.set({ name, value: '', ...options }) },
+        },
+      }
+    );
 
+    // 2. AUTHENTICATION CHECK: This is what was missing
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    // If there is no user or an error, block the request
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized: Please log in to generate clinical notes." },
+        { status: 401 }
+      );
+    }
+    
 
     // Validate required fields
     if (!body.symptoms && !body.diagnoses) {
