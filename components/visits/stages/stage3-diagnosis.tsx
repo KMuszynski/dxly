@@ -296,7 +296,7 @@ export function VisitStage3Diagnosis({
             )}
 
             {!isLoading && diagnosisSuggestions.length > 0 && (
-              <div className="space-y-2 max-h-[350px] overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto p-1">
                 {diagnosisSuggestions.map((result, idx) => (
                   <div
                     key={idx}
@@ -355,20 +355,22 @@ export function VisitStage3Diagnosis({
                             )}
                           </div>
                         </div>
-                        <div className="flex-1 text-center text-sm text-muted-foreground">
-                          {t("add.stages.diagnosis.clickToExpand")}
+                        <div className="flex flex-col items-center justify-center gap-2">
+                          <div className="flex-1 text-center text-sm text-muted-foreground">
+                            {t("add.stages.diagnosis.clickToExpand")}
+                          </div>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addDiagnosisFromSuggestion(result);
+                            }}
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            {t("add.stages.diagnosis.addThis")}
+                          </Button>
                         </div>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addDiagnosisFromSuggestion(result);
-                          }}
-                        >
-                          <Plus className="h-4 w-4 mr-2" />
-                          {t("add.stages.diagnosis.addThis")}
-                        </Button>
                       </div>
                     </div>
 

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 // Types for visit data
 interface VisitSymptom {
@@ -223,58 +225,40 @@ function buildPrompt(data: GenerateNotesRequest): string {
       ? "Write the notes in Polish (Polski)."
       : "Write the notes in English.";
 
-  return `You are a medical assistant helping a doctor write a concise clinical visit note for the medical record.
+      return `You are a professional medical scribe. Generate a formal medical epicrisis (clinical note) using the SOAP format based on the data below.
 
-IMPORTANT RULES (must follow):
-- Use ONLY the information explicitly provided below.
-- Do NOT invent or assume symptoms, vitals, exam findings, medical history, medications, allergies, or test results.
-- If a commonly expected item is missing (e.g., vitals, ROS details, PE findings), include a clear placeholder in square brackets, e.g. [Vitals not documented], [ROS not documented], [Physical exam not documented].
-- Do NOT add diagnoses that are not listed.
-- If symptom details are incomplete, write them as provided and leave missing details as placeholders (e.g., [severity not documented]).
-
-Write in a concise professional tone. Keep each section short (1–3 sentences max) unless more detail is provided.
-
-OUTPUT FORMAT (use exactly these headings):
-CC:
-HPI:
-Vitals:
-PE:
-Assessment:
-Plan:
-
-Patient: ${patientName || "Unknown"}
-Visit Date/Time: ${visitDate} ${visitTime}
-
-Patient date of birth: ${patient?.date_of_birth ?? 'undefined'}
-
-Patient gender: ${patient?.gender ?? 'undefined'}
-
-Patient address: ${patient?.address ?? 'undefined'}
-
-SYMPTOMS (structured input; may include follow-up fields):
-${symptomsText || "No symptoms recorded"}
-
-DIAGNOSES:
-${diagnosesText || "No diagnoses recorded"}
-
-Additional instructions:
-- CC: one-line summary of the main complaint(s) based on the symptom list.
-- HPI: include only symptom onset/duration/type/associated findings from the symptom details provided.
-- Vitals: if not provided, write [Vitals not documented].
-- PE: if not provided, write [Physical exam not documented].
-- Assessment: list the diagnoses exactly as provided (one line).
-- Plan: provide only general, non-prescriptive supportive recommendations unless treatment/testing/follow-up instructions are explicitly provided. Always include a placeholder for return precautions if not documented: [Return precautions not documented]. If follow-up timing is not provided, write [Follow-up not documented].
-
-${languageInstruction}
-
-Dont use any formatting, keep is simple txt
-
-Generate the clinical note now:`;
+      [CONSTRAINTS]
+      - Use professional medical terminology (e.g., 'patient reports' instead of 'patient said').
+      - Strictly follow the SOAP structure (Subjective, Objective, Assessment, Plan).
+      - Format: Plain text only. Use clear headers. Do NOT use Markdown symbols like **bold**, ##, or bullets (*).
+      - ${languageInstruction}
+      
+      [VISIT CONTEXT]
+      Date/Time: ${visitDate} ${visitTime}
+      Patient: ${patient?.gender ?? 'Unknown'}, DOB: ${patient?.date_of_birth ?? 'Unknown'}
+      
+      [CLINICAL DATA]
+      SYMPTOMS:
+      ${symptomsText || "No symptoms recorded"}
+      
+      DIAGNOSES:
+      ${diagnosesText || "No diagnoses recorded"}
+      
+      [SOAP INSTRUCTIONS]
+      S: Present the anamnesis and chief complaints.
+      O: Document specific symptom attributes, durations, and follow-up data.
+      A: Summarize the clinical assessment based on the provided diagnoses.
+      P: Outline the recommended follow-up or next steps.
+      
+      Generate the clinical note now:`;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: GenerateNotesRequest = await request.json();
+
+    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { cookies: await cookies() });
+
 
     // Validate required fields
     if (!body.symptoms && !body.diagnoses) {

@@ -57,7 +57,9 @@ export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Patient-specific state
-  const [patientRecord, setPatientRecord] = useState<PatientRecord | null>(null);
+  const [patientRecord, setPatientRecord] = useState<PatientRecord | null>(
+    null
+  );
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
   const [phone, setPhone] = useState("");
@@ -487,17 +489,27 @@ export default function Settings() {
                 </div>
 
                 <div className="space-y-2 max-w-[150px]">
-                  <Label htmlFor="gender">{t("profile.gender", "Gender")}</Label>
+                  <Label htmlFor="gender">
+                    {t("profile.gender", "Gender")}
+                  </Label>
                   <select
                     id="gender"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
-                    <option value="unknown">{t("profile.genderOptions.unknown", "Prefer not to say")}</option>
-                    <option value="male">{t("profile.genderOptions.male", "Male")}</option>
-                    <option value="female">{t("profile.genderOptions.female", "Female")}</option>
-                    <option value="other">{t("profile.genderOptions.other", "Other")}</option>
+                    <option value="unknown">
+                      {t("profile.genderOptions.unknown", "Prefer not to say")}
+                    </option>
+                    <option value="male">
+                      {t("profile.genderOptions.male", "Male")}
+                    </option>
+                    <option value="female">
+                      {t("profile.genderOptions.female", "Female")}
+                    </option>
+                    <option value="other">
+                      {t("profile.genderOptions.other", "Other")}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -514,7 +526,9 @@ export default function Settings() {
               </div>
 
               <div className="space-y-2 max-w-[350px]">
-                <Label htmlFor="address">{t("profile.address", "Address")}</Label>
+                <Label htmlFor="address">
+                  {t("profile.address", "Address")}
+                </Label>
                 <Input
                   id="address"
                   value={address}
@@ -530,7 +544,9 @@ export default function Settings() {
                   value={pesel}
                   onChange={(e) => {
                     // Only allow digits and max 11 characters
-                    const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                    const value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 11);
                     setPesel(value);
                   }}
                   placeholder="12345678901"
@@ -562,7 +578,7 @@ export default function Settings() {
             <Button
               onClick={handleSave}
               disabled={saving || uploading}
-              className="w-3/5 mt-4"
+              className="w-3/5 mt-4 bg-brand text-white hover:!bg-brand hover:brightness-125"
             >
               {saving || uploading
                 ? t("profile.saving")
