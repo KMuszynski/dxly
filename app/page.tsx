@@ -113,9 +113,9 @@ export default function Home() {
           <video
             src="/landingPage/dna-helix-video.mp4"
             poster="/landingPage/video-image.png"
-            // autoPlay
+            autoPlay
             muted
-            // loop
+            loop
             playsInline
             preload="metadata"
             className="w-full h-full object-cover"
@@ -198,9 +198,9 @@ export default function Home() {
 
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <video
-                // autoPlay
+                autoPlay
                 muted
-                // loop
+                loop
                 playsInline
                 className="w-full h-full object-cover"
               >
