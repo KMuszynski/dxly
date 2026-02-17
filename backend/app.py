@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Flask API server for disease diagnosis based on symptoms.
-Exposes REST endpoints for the diagnosis functionality.
-"""
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -10,11 +6,10 @@ from diagnose import diagnose
 import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes (adjust as needed for production)
+CORS(app)  
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    """Health check endpoint."""
     return jsonify({
         'status': 'healthy',
         'service': 'diagnosis-api'
@@ -23,37 +18,10 @@ def health_check():
 
 @app.route('/api/diagnose', methods=['POST'])
 def diagnose_endpoint():
-    """
-    Diagnose diseases based on symptoms.
-    
-    Request body:
-        {
-            "symptoms": ["fever", "headache", "nausea"],
-            "top_n": 10  # optional, default is 10
-        }
-    
-    Response:
-        {
-            "success": true,
-            "results": [
-                {
-                    "disease": "meningitis",
-                    "score": 142.92,
-                    "match_count": 685,
-                    "total_symptom_count": 4,
-                    "frequency": 297,
-                    "match_percentage": 59.05,
-                    "case_count": 290,
-                    "exact_matches": 30
-                },
-                ...
-            ]
-        }
-    """
+
     try:
         data = request.get_json()
         
-        # Validate input
         if not data:
             return jsonify({
                 'success': False,
@@ -79,12 +47,10 @@ def diagnose_endpoint():
                 'error': 'symptoms list cannot be empty'
             }), 400
         
-        # Get optional top_n parameter
         top_n = data.get('top_n', 10)
         if not isinstance(top_n, int) or top_n < 1 or top_n > 100:
-            top_n = 10  # Default or sanitize
+            top_n = 10  
         
-        # Call diagnosis function
         results = diagnose(symptoms, top_n=top_n)
         
         return jsonify({
@@ -105,7 +71,6 @@ def diagnose_endpoint():
 
 @app.route('/api/diagnose', methods=['GET'])
 def diagnose_get():
-    """GET endpoint with query parameters (for testing)."""
     symptoms_str = request.args.get('symptoms')
     if not symptoms_str:
         return jsonify({
@@ -134,11 +99,8 @@ def diagnose_get():
 
 
 if __name__ == '__main__':
-    # default to 5001
     port = int(os.environ.get('PORT', 5001))
     
-    # Run in debug mode for development
-    # Set FLASK_ENV=production for production
     debug = os.environ.get('FLASK_ENV') != 'production'
     
     print(f"Starting Flask server on port {port}")

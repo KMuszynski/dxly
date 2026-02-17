@@ -1,25 +1,15 @@
-"""
-Flask API for Medical Diagnosis Engine
-
-Endpoints:
-- GET  /api/symptoms      - Get list of available symptoms with follow-up questions
-- POST /api/diagnose      - Submit symptoms and get differential diagnosis
-- GET  /api/diseases      - Get list of all diseases in the database
-- GET  /api/health        - Health check endpoint
-"""
-
 import os
 import sys
 
-# Get the absolute path of the current directory (backend/json-based)
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
-# Add it to sys.path so 'import diagnose' works
+
 if current_dir not in sys.path:
     sys.path.append(current_dir)
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-# Now this import will find the file sitting right next to app.py
+
 from diagnose import (
     diagnose,
     get_differential_diagnosis,
@@ -28,12 +18,11 @@ from diagnose import (
 )
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend integration
+CORS(app)  
 
 
 @app.route("/api/health", methods=["GET"])
 def health_check():
-    """Health check endpoint."""
     return jsonify({
         "status": "healthy",
         "service": "diagnosis-engine",
@@ -43,16 +32,6 @@ def health_check():
 
 @app.route("/api/symptoms", methods=["GET"])
 def get_symptoms():
-    """
-    Get all available symptoms with their follow-up questions.
-    
-    Returns:
-        JSON list of symptoms, each containing:
-        - id: Symptom identifier (key name)
-        - display_name: Human-readable name
-        - global_follow_ups: Common questions for this symptom
-        - unique_follow_ups: Symptom-specific questions
-    """
     try:
         symptom_library = load_symptom_library()
         
@@ -65,7 +44,7 @@ def get_symptoms():
                 "unique_follow_ups": symptom_data.get("unique_follow_ups", [])
             })
         
-        # Sort alphabetically by display name
+
         symptoms.sort(key=lambda x: x["display_name"])
         
         return jsonify({
@@ -83,15 +62,6 @@ def get_symptoms():
 
 @app.route("/api/diseases", methods=["GET"])
 def get_diseases():
-    """
-    Get all diseases in the database.
-    
-    Query params:
-        category (optional): Filter by disease category
-    
-    Returns:
-        JSON list of diseases with their symptoms and expectations
-    """
     try:
         disease_profiles = load_disease_profiles()
         category_filter = request.args.get("category", "").lower()
@@ -103,11 +73,9 @@ def get_diseases():
             category = disease_data.get("category", "General")
             categories.add(category)
             
-            # Apply category filter if specified
             if category_filter and category.lower() != category_filter:
                 continue
             
-            # Get list of symptom names for this disease
             symptom_names = list(disease_data.get("symptoms", {}).keys())
             
             diseases.append({
@@ -119,7 +87,6 @@ def get_diseases():
                 "symptoms": symptom_names
             })
         
-        # Sort alphabetically
         diseases.sort(key=lambda x: x["common_name"])
         
         return jsonify({
@@ -138,59 +105,6 @@ def get_diseases():
 
 @app.route("/api/diagnose", methods=["POST"])
 def diagnose_endpoint():
-    """
-    Submit patient symptoms and receive differential diagnosis.
-    
-    Request body:
-        {
-            "symptoms": {
-                "Symptom Name": {
-                    "present": true,
-                    "follow_up_key": "value",
-                    ...
-                },
-                ...
-            },
-            "options": {
-                "top_n": 5,           // Max number of results (default: 5)
-                "min_confidence": 10  // Minimum confidence % (default: 10)
-            }
-        }
-    
-    Example request:
-        {
-            "symptoms": {
-                "Ear Pain": {
-                    "present": true,
-                    "pain_character": "throbbing",
-                    "location": "deep_internal",
-                    "intensity": 7
-                },
-                "Fever": {
-                    "present": true,
-                    "pattern": "intermittent"
-                }
-            }
-        }
-    
-    Returns:
-        {
-            "success": true,
-            "input_symptoms": ["Ear Pain", "Fever"],
-            "diagnosis_count": 3,
-            "diagnoses": [
-                {
-                    "disease": "Acute Otitis Media",
-                    "common_name": "Acute Otitis Media",
-                    "category": "Otolaryngology",
-                    "confidence": 85.5,
-                    "matched_symptoms": [...],
-                    "explanation": "..."
-                },
-                ...
-            ]
-        }
-    """
     try:
         data = request.get_json()
         
@@ -208,16 +122,13 @@ def diagnose_endpoint():
                 "error": "At least one symptom is required"
             }), 400
         
-        # Get options with defaults
         options = data.get("options", {})
         top_n = options.get("top_n", 5)
         min_confidence = options.get("min_confidence", 10.0)
         
-        # Validate options
-        top_n = max(1, min(20, int(top_n)))  # Clamp between 1 and 20
+        top_n = max(1, min(20, int(top_n)))
         min_confidence = max(0, min(100, float(min_confidence)))
         
-        # Run diagnosis
         diagnoses = get_differential_diagnosis(
             patient_symptoms=symptoms,
             top_n=top_n,
@@ -246,19 +157,10 @@ def diagnose_endpoint():
 
 @app.route("/api/symptom/<symptom_id>", methods=["GET"])
 def get_symptom_details(symptom_id: str):
-    """
-    Get detailed information about a specific symptom.
-    
-    Args:
-        symptom_id: The symptom identifier (e.g., "Ear Pain")
-    
-    Returns:
-        Symptom details including all follow-up questions
-    """
+
     try:
         symptom_library = load_symptom_library()
         
-        # Try exact match first
         if symptom_id in symptom_library:
             symptom_data = symptom_library[symptom_id]
             return jsonify({
@@ -271,7 +173,6 @@ def get_symptom_details(symptom_id: str):
                 }
             })
         
-        # Try case-insensitive match
         for key, data in symptom_library.items():
             if key.lower() == symptom_id.lower():
                 return jsonify({
@@ -298,19 +199,10 @@ def get_symptom_details(symptom_id: str):
 
 @app.route("/api/disease/<disease_id>", methods=["GET"])
 def get_disease_details(disease_id: str):
-    """
-    Get detailed information about a specific disease.
-    
-    Args:
-        disease_id: The disease identifier (e.g., "Acute Otitis Media")
-    
-    Returns:
-        Disease details including all expected symptoms
-    """
+
     try:
         disease_profiles = load_disease_profiles()
         
-        # Try exact match first
         if disease_id in disease_profiles:
             disease_data = disease_profiles[disease_id]
             return jsonify({
@@ -324,7 +216,6 @@ def get_disease_details(disease_id: str):
                 }
             })
         
-        # Try case-insensitive match
         for key, data in disease_profiles.items():
             if key.lower() == disease_id.lower():
                 return jsonify({

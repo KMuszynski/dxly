@@ -56,32 +56,27 @@ export function ScheduleVisitDialog({
   const [saving, setSaving] = React.useState(false);
   const [loadingDoctors, setLoadingDoctors] = React.useState(false);
 
-  // Patient selection
   const [patients, setPatients] = React.useState<Patient[]>([]);
   const [patientSearch, setPatientSearch] = React.useState("");
   const [selectedPatient, setSelectedPatient] = React.useState<Patient | null>(
-    null
+    null,
   );
   const [showPatientDropdown, setShowPatientDropdown] = React.useState(false);
 
-  // Doctor selection
   const [doctors, setDoctors] = React.useState<Doctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor | null>(
-    null
+    null,
   );
 
-  // Visit details
   const [visitDate, setVisitDate] = React.useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [visitTime, setVisitTime] = React.useState("09:00");
   const [notes, setNotes] = React.useState("");
 
-  // Load doctors on mount
   React.useEffect(() => {
     if (open) {
       loadDoctors();
-      // Reset form
       setSelectedPatient(null);
       setPatientSearch("");
       setSelectedDoctor(null);
@@ -91,9 +86,7 @@ export function ScheduleVisitDialog({
     }
   }, [open]);
 
-  // Search patients as user types (but not if already selected)
   React.useEffect(() => {
-    // Don't search if a patient is already selected
     if (selectedPatient) {
       return;
     }
@@ -137,7 +130,7 @@ export function ScheduleVisitDialog({
         .from("patients")
         .select("id, first_name, last_name, email, phone")
         .or(
-          `first_name.ilike.%${query}%,last_name.ilike.%${query}%,email.ilike.%${query}%`
+          `first_name.ilike.%${query}%,last_name.ilike.%${query}%,email.ilike.%${query}%`,
         )
         .limit(10);
 
@@ -160,14 +153,13 @@ export function ScheduleVisitDialog({
   const handleSchedule = async () => {
     if (!selectedPatient || !selectedDoctor) {
       toast.error(
-        t("schedule.validation.required", "Please select a patient and doctor")
+        t("schedule.validation.required", "Please select a patient and doctor"),
       );
       return;
     }
 
     setSaving(true);
     try {
-      // Combine date and time
       const visitDateTime = new Date(`${visitDate}T${visitTime}:00`);
 
       const { error } = await supabase.from("visits").insert({
@@ -186,7 +178,7 @@ export function ScheduleVisitDialog({
     } catch (error: any) {
       console.error("Error scheduling visit:", error);
       toast.error(
-        error.message || t("schedule.error", "Failed to schedule visit")
+        error.message || t("schedule.error", "Failed to schedule visit"),
       );
     } finally {
       setSaving(false);
@@ -201,7 +193,7 @@ export function ScheduleVisitDialog({
           <DialogDescription>
             {t(
               "schedule.description",
-              "Schedule an appointment for a patient. They will be able to enter their symptoms before the visit."
+              "Schedule an appointment for a patient. They will be able to enter their symptoms before the visit.",
             )}
           </DialogDescription>
         </DialogHeader>
@@ -227,7 +219,7 @@ export function ScheduleVisitDialog({
                   }
                   placeholder={t(
                     "schedule.searchPatient",
-                    "Search by name or email..."
+                    "Search by name or email...",
                   )}
                   className="pl-10"
                 />
@@ -298,8 +290,8 @@ export function ScheduleVisitDialog({
                       loadingDoctors
                         ? t("schedule.loadingDoctors", "Loading doctors...")
                         : doctors.length === 0
-                        ? t("schedule.noDoctors", "No doctors available")
-                        : t("schedule.selectDoctor", "Select a doctor...")
+                          ? t("schedule.noDoctors", "No doctors available")
+                          : t("schedule.selectDoctor", "Select a doctor...")
                     }
                   />
                 </SelectTrigger>
@@ -320,7 +312,7 @@ export function ScheduleVisitDialog({
               <p className="text-xs text-destructive">
                 {t(
                   "schedule.noDoctorsHint",
-                  "No doctors found. Make sure migration 009 is applied."
+                  "No doctors found. Make sure migration 009 is applied.",
                 )}
               </p>
             )}
@@ -366,7 +358,7 @@ export function ScheduleVisitDialog({
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t(
                 "schedule.notesPlaceholder",
-                "Reason for visit, special instructions..."
+                "Reason for visit, special instructions...",
               )}
               rows={3}
               className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"

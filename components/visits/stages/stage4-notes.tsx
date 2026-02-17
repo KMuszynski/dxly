@@ -34,7 +34,6 @@ export function VisitStage4Notes({
 
   React.useEffect(() => {
     const loadMissingPatientData = async () => {
-      // 1. Check if we have an ID but the AI-required data is missing
       if (formData.patientId && !formData.patient) {
         console.log("Fetching missing patient data for AI...");
 
@@ -47,7 +46,6 @@ export function VisitStage4Notes({
 
           if (error) throw error;
 
-          // 2. Update the parent state so handleGenerateNotes can see it
           if (data) {
             setFormData((prev) => ({
               ...prev,
@@ -85,21 +83,19 @@ export function VisitStage4Notes({
         return;
       }
 
-      // Combine date and time into a single datetime
       const visitDateTime = new Date(
-        `${formData.visitDate}T${formData.visitTime}`
+        `${formData.visitDate}T${formData.visitTime}`,
       );
 
       let visitId: string;
 
       if (existingVisitId) {
-        // Update existing visit (Start Visit workflow)
         const { error: visitError } = await supabase
           .from("visits")
           .update({
             visit_date: visitDateTime.toISOString(),
             notes: formData.visitNotes || null,
-            status: "completed", // Mark as completed when doctor saves
+            status: "completed",
           })
           .eq("id", existingVisitId);
 
@@ -112,11 +108,9 @@ export function VisitStage4Notes({
 
         visitId = existingVisitId;
 
-        // Delete existing symptoms and diagnoses (will be replaced)
         await supabase.from("visit_symptoms").delete().eq("visit_id", visitId);
         await supabase.from("visit_diagnoses").delete().eq("visit_id", visitId);
       } else {
-        // Create new visit
         const { data: visit, error: visitError } = await supabase
           .from("visits")
           .insert({
@@ -124,7 +118,7 @@ export function VisitStage4Notes({
             doctor_id: session.user.id,
             visit_date: visitDateTime.toISOString(),
             notes: formData.visitNotes || null,
-            status: "completed", // New visits from this flow are completed
+            status: "completed",
           })
           .select()
           .single();
@@ -145,7 +139,6 @@ export function VisitStage4Notes({
         visitId = visit.id;
       }
 
-      // Insert symptoms
       if (formData.symptoms.length > 0) {
         const symptomsData = formData.symptoms
           .filter((s) => s.symptom.trim())
@@ -176,7 +169,6 @@ export function VisitStage4Notes({
         }
       }
 
-      // Insert diagnoses
       if (formData.diagnoses.length > 0) {
         const diagnosesData = formData.diagnoses
           .filter((d) => d.diagnosis.trim())
@@ -203,7 +195,7 @@ export function VisitStage4Notes({
       toast.success(
         existingVisitId
           ? t("add.success.visitCompleted", "Visit completed successfully")
-          : t("add.success.visitAdded")
+          : t("add.success.visitAdded"),
       );
       onComplete?.();
     } catch (error) {
@@ -215,7 +207,6 @@ export function VisitStage4Notes({
   };
 
   const handleGenerateNotes = async () => {
-    // Check if there's any data to generate notes from
     if (formData.symptoms.length === 0 && formData.diagnoses.length === 0) {
       toast.error(t("add.stages.notes.generateNoData"));
       return;
@@ -223,14 +214,17 @@ export function VisitStage4Notes({
 
     setGenerating(true);
     try {
-      // Get the current session to include the auth token
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       const response = await fetch("/api/generate-notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(session?.access_token && { "Authorization": `Bearer ${session.access_token}` }),
+          ...(session?.access_token && {
+            Authorization: `Bearer ${session.access_token}`,
+          }),
         },
         body: JSON.stringify({
           patientName: formData.patientName,
@@ -252,8 +246,17 @@ export function VisitStage4Notes({
         }),
       });
 
-      const data = await response.json();
-      //console.log(formData.patient);
+      const text = await response.text();
+      if (!text) {
+        throw new Error("Empty response from server");
+      }
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Invalid response from server");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to generate notes");
@@ -271,7 +274,7 @@ export function VisitStage4Notes({
       toast.error(
         error instanceof Error
           ? error.message
-          : t("add.stages.notes.generateError")
+          : t("add.stages.notes.generateError"),
       );
     } finally {
       setGenerating(false);
@@ -326,17 +329,30 @@ export function VisitStage4Notes({
             <Label htmlFor="visit-notes">
               {t("add.stages.notes.notesLabel")}
             </Label>
-            <textarea
-              id="visit-notes"
-              value={formData.visitNotes}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, visitNotes: e.target.value }))
-              }
-              placeholder={t("add.stages.notes.notesPlaceholder")}
-              disabled={saving}
-              rows={8}
-              className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-            />
+            <div className="relative">
+              <textarea
+                id="visit-notes"
+                value={formData.visitNotes}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    visitNotes: e.target.value,
+                  }))
+                }
+                placeholder={t("add.stages.notes.notesPlaceholder")}
+                disabled={saving || generating}
+                rows={8}
+                className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+              />
+              {generating && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-[1px] rounded-md">
+                  <Loader2 className="h-8 w-8 animate-spin text-brand mb-2" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {t("add.stages.notes.generating")}
+                  </span>
+                </div>
+              )}
+            </div>
             <Button
               variant="default"
               size="default"

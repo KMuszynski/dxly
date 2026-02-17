@@ -30,12 +30,12 @@ interface GenerateNotesRequest {
   language?: string;
 }
 
-// LLM Provider interface - makes it easy to swap providers
+
 interface LLMProvider {
   generateNotes(prompt: string): Promise<string>;
 }
 
-// Gemini provider implementation
+
 class GeminiProvider implements LLMProvider {
   private apiKey: string;
   private model: string;
@@ -131,7 +131,7 @@ class GeminiProvider implements LLMProvider {
   }
 }
 
-// OpenAI provider implementation (for future use)
+
 class OpenAIProvider implements LLMProvider {
   private apiKey: string;
   private model: string;
@@ -174,7 +174,7 @@ class OpenAIProvider implements LLMProvider {
   }
 }
 
-// Factory to get the appropriate LLM provider
+
 function getLLMProvider(): LLMProvider {
   // Check for OpenAI first (primary)
   const openaiKey = process.env.OPENAI_API_KEY;
@@ -191,7 +191,7 @@ function getLLMProvider(): LLMProvider {
   throw new Error("No LLM API key configured. Set OPENAI_API_KEY or GEMINI_API_KEY.");
 }
 
-// Build the prompt for note generation
+
 function buildPrompt(data: GenerateNotesRequest): string {
   const { patientName, patient, symptoms, diagnoses, visitDate, visitTime, language } =
     data;
@@ -256,7 +256,7 @@ export async function POST(request: NextRequest) {
   try {
     const body: GenerateNotesRequest = await request.json();
 
-    // 1. AUTHENTICATION CHECK: Verify the Bearer token from Authorization header
+
     const authHeader = request.headers.get("Authorization");
     
     if (!authHeader?.startsWith("Bearer ")) {
@@ -268,7 +268,6 @@ export async function POST(request: NextRequest) {
 
     const token = authHeader.replace("Bearer ", "");
     
-    // Create a Supabase client and verify the token
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -284,7 +283,6 @@ export async function POST(request: NextRequest) {
     }
     
 
-    // Validate required fields
     if (!body.symptoms && !body.diagnoses) {
       return NextResponse.json(
         { error: "At least symptoms or diagnoses are required" },
@@ -292,19 +290,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the LLM provider
     const provider = getLLMProvider();
 
-    // Build the prompt
     const prompt = buildPrompt(body);
-    //console.log(prompt);
-    // Generate notes
-    //const generatedNotes = await provider.generateNotes(prompt);
+    const generatedNotes = await provider.generateNotes(prompt);
 
     return NextResponse.json({
       success: true,
-      notes: await provider.generateNotes(prompt),
-      //notes: "test",
+      notes: generatedNotes,
     });
   } catch (error) {
     console.error("Error generating notes:", error);

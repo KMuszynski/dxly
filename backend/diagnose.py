@@ -1,24 +1,3 @@
-#!/usr/bin/env python3
-"""
-Function to predict diseases based on symptoms using the disease-symptom dataset.
-
-This module provides a function to rank possible diseases given a list of symptoms.
-The scoring algorithm considers:
-- Number of matching symptoms
-- Disease frequency (more common diseases get slight boost)
-- Symptom correlation (single-symptom cases indicate higher correlation)
-- Exact matches (all symptoms present)
-
-Usage:
-    from diagnose import diagnose
-    
-    symptoms = ["fever", "headache", "nausea"]
-    results = diagnose(symptoms, top_n=5)
-    
-    for result in results:
-        print(f"{result['disease']}: {result['score']}")
-"""
-
 import csv
 import os
 from collections import defaultdict
@@ -93,40 +72,20 @@ def find_symptom_indices(symptoms: List[str], symptom_columns: List[str]) -> Lis
 
 
 def diagnose(symptoms: List[str], top_n: int = 10, csv_path: str = None) -> List[Dict[str, any]]:
-    """
-    Predict diseases based on a list of symptoms.
-    
-    Args:
-        symptoms: List of symptom names (strings)
-        top_n: Number of top predictions to return (default: 10)
-        csv_path: Optional path to CSV file (default: uses file in same directory)
-    
-    Returns:
-        List of dictionaries, each containing:
-            - 'disease': Disease name
-            - 'score': Match score (higher is better)
-            - 'match_count': Number of matched symptoms
-            - 'total_symptom_count': Total number of symptoms in input
-            - 'frequency': Number of times this disease appears in dataset
-            - 'match_percentage': Percentage of input symptoms matched
-    
-    Example:
-        >>> results = diagnose(["fever", "headache", "nausea"])
-        >>> print(results[0]['disease'])  # Top predicted disease
-    """
-    # Load dataset
+
+
     dataset = load_dataset(csv_path)
     diseases = dataset['diseases']
     symptom_columns = dataset['symptom_columns']
     data_rows = dataset['data_rows']
     
-    # Find column indices for input symptoms
+
     symptom_indices = find_symptom_indices(symptoms, symptom_columns)
     
     if not symptom_indices:
         return []
     
-    # Score each disease
+
     disease_scores = defaultdict(lambda: {
         'total_score': 0.0,
         'match_count': 0,
@@ -135,16 +94,16 @@ def diagnose(symptoms: List[str], top_n: int = 10, csv_path: str = None) -> List
         'single_symptom_matches': 0
     })
     
-    # Count disease frequencies
+
     disease_frequencies = defaultdict(int)
     for disease in diseases:
         disease_frequencies[disease] += 1
     
-    # Score each row
+
     for i, row_symptoms in enumerate(data_rows):
         disease = diseases[i]
         
-        # Count how many input symptoms match this row
+
         matched_symptoms = sum(1 for idx in symptom_indices if idx < len(row_symptoms) and row_symptoms[idx] == 1)
         total_symptoms_in_row = sum(row_symptoms)
         
@@ -153,37 +112,34 @@ def diagnose(symptoms: List[str], top_n: int = 10, csv_path: str = None) -> List
         
         disease_scores[disease]['case_count'] += 1
         
-        # Calculate match score
+
         match_percentage = matched_symptoms / len(symptom_indices)
         
-        # Base score: weighted by match percentage
+
         base_score = match_percentage * 100
         
-        # Bonus for exact or near-exact matches
+
         if matched_symptoms == len(symptom_indices):
             disease_scores[disease]['exact_matches'] += 1
-            base_score *= 2.0  # Exact match bonus
+            base_score *= 2.0  
         
-        # Bonus for high correlation (single symptom cases)
+
         if total_symptoms_in_row == 1 and matched_symptoms == 1:
             disease_scores[disease]['single_symptom_matches'] += 1
-            base_score *= 1.5  # High correlation bonus
+            base_score *= 1.5  
         
-        # Weight by disease frequency (more common diseases get slight boost)
+
         frequency_weight = 1.0 + (disease_frequencies[disease] / 10000.0)
         
-        # Add to total score
+
         disease_scores[disease]['total_score'] += base_score * frequency_weight
         disease_scores[disease]['match_count'] += matched_symptoms
     
-    # Calculate final scores and prepare results
     results = []
     for disease, stats in disease_scores.items():
-        # Average score per case
         avg_score = stats['total_score'] / stats['case_count'] if stats['case_count'] > 0 else 0
         
-        # Weight by number of matching cases (more cases = higher confidence)
-        confidence_weight = min(stats['case_count'] / 10.0, 2.0)  # Cap at 2x
+        confidence_weight = min(stats['case_count'] / 10.0, 2.0)  
         
         final_score = avg_score * confidence_weight
         
@@ -200,14 +156,12 @@ def diagnose(symptoms: List[str], top_n: int = 10, csv_path: str = None) -> List
             'exact_matches': stats['exact_matches']
         })
     
-    # Sort by score (descending)
     results.sort(key=lambda x: x['score'], reverse=True)
     
     return results[:top_n]
 
 
 if __name__ == "__main__":
-    # Example usage
     test_symptoms = ["fever", "headache", "nausea", "vomiting"]
     print(f"Diagnosing symptoms: {test_symptoms}\n")
     

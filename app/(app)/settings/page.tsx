@@ -48,7 +48,6 @@ export default function Settings() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // Form state
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [specialization, setSpecialization] = useState("");
@@ -58,7 +57,7 @@ export default function Settings() {
 
   // Patient-specific state
   const [patientRecord, setPatientRecord] = useState<PatientRecord | null>(
-    null
+    null,
   );
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
@@ -89,7 +88,6 @@ export default function Settings() {
           setSpecialization(userProfile.specialization || "");
           setProfilePictureUrl(userProfile.profile_picture || "");
 
-          // Fetch patient record if user is a patient
           if (userProfile.type === "patient") {
             const { data: patient } = await supabase
               .from("patients")
@@ -119,12 +117,11 @@ export default function Settings() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith("image/")) {
         toast.error(t("messages.fileTypeError"));
         return;
       }
-      // Validate file size (max 5MB)
+
       if (file.size > 5 * 1024 * 1024) {
         toast.error(t("messages.fileSizeError"));
         return;
@@ -143,8 +140,6 @@ export default function Settings() {
     if (!oldPictureUrl) return;
 
     try {
-      // Extract file path from URL
-      // URL format: https://[project].supabase.co/storage/v1/object/public/profile_pictures/[userId]/[filename]
       const urlParts = oldPictureUrl.split("/profile_pictures/");
       if (urlParts.length < 2) return;
 
@@ -157,22 +152,19 @@ export default function Settings() {
 
       if (error) {
         console.error("Error deleting old profile picture:", error);
-        // Don't throw - continue with upload even if deletion fails
       }
     } catch (error) {
       console.error("Error deleting old profile picture:", error);
-      // Don't throw - continue with upload even if deletion fails
     }
   };
 
   const uploadProfilePicture = async (
     file: File,
-    oldPictureUrl?: string
+    oldPictureUrl?: string,
   ): Promise<string | null> => {
     try {
       setUploading(true);
 
-      // Get the authenticated user ID
       const {
         data: { user: authUser },
         error: userError,
@@ -183,15 +175,12 @@ export default function Settings() {
         throw new Error("Failed to get authenticated user");
       }
 
-      // Delete old profile picture if it exists
       if (oldPictureUrl) {
         await deleteOldProfilePicture(oldPictureUrl);
       }
 
-      // Upload to folder structure: userId/filename
       const filePath = `${authUser.id}/${file.name}`;
 
-      // Upload to Supabase Storage
       const { data, error } = await supabase.storage
         .from("profile_pictures")
         .upload(filePath, file, {
@@ -204,7 +193,6 @@ export default function Settings() {
         throw error;
       }
 
-      // Get public URL
       const {
         data: { publicUrl },
       } = supabase.storage.from("profile_pictures").getPublicUrl(filePath);
@@ -225,14 +213,12 @@ export default function Settings() {
     try {
       let profilePictureUrlToSave = profilePictureUrl;
 
-      // Upload new profile picture if selected
       if (profilePicture) {
-        // Get the current profile picture URL (before update) to delete it
         const oldPictureUrl = profile?.profile_picture;
 
         const uploadedUrl = await uploadProfilePicture(
           profilePicture,
-          oldPictureUrl
+          oldPictureUrl,
         );
         if (uploadedUrl) {
           profilePictureUrlToSave = uploadedUrl;
@@ -243,18 +229,15 @@ export default function Settings() {
         }
       }
 
-      // Update user profile
       const updateData: any = {
         name,
         surname,
       };
 
-      // Only update specialization if user is a doctor
       if (profile.type === "doctor") {
         updateData.specialization = specialization || null;
       }
 
-      // Update profile picture if it changed
       if (profilePictureUrlToSave) {
         updateData.profile_picture = profilePictureUrlToSave;
       }
@@ -270,7 +253,6 @@ export default function Settings() {
         return;
       }
 
-      // Update patient record if user is a patient
       if (profile.type === "patient" && patientRecord) {
         const { error: patientError } = await supabase
           .from("patients")
@@ -294,7 +276,6 @@ export default function Settings() {
 
       toast.success(t("messages.updateSuccess"));
 
-      // Refresh profile and reset form
       const { data: userProfile } = await supabase
         .from("users")
         .select("*")
@@ -302,19 +283,15 @@ export default function Settings() {
         .single();
 
       if (userProfile) {
-        // Update profile state
         setProfile(userProfile);
 
-        // Reset form fields with saved values
         setName(userProfile.name || "");
         setSurname(userProfile.surname || "");
         setSpecialization(userProfile.specialization || "");
 
-        // Reset profile picture state
         setProfilePicture(null);
         setProfilePictureUrl(userProfile.profile_picture || "");
 
-        // Reset file input
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -404,7 +381,8 @@ export default function Settings() {
                   htmlFor="profile-picture"
                   className={cn(
                     "absolute bottom-0 right-0 h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer shadow-md transition-all hover:bg-primary/90 hover:scale-110 focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
-                    uploading && "cursor-not-allowed opacity-50 hover:scale-100"
+                    uploading &&
+                      "cursor-not-allowed opacity-50 hover:scale-100",
                   )}
                 >
                   <Edit className="h-4 w-4" />

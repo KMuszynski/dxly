@@ -48,7 +48,7 @@ export interface VisitFormData {
   patientName: string | null;
   patient: PatientInfo | null;
 
-  // Stage 2: Symptoms - now includes follow-up answers
+  // Stage 2: Symptoms
   symptoms: Array<{
     symptom: string; // Symptom ID (e.g., "Ear Pain")
     duration: string; // Legacy field for backward compatibility
@@ -84,7 +84,7 @@ interface AddVisitDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onVisitAdded?: () => void;
-  existingVisit?: ExistingVisit | null; // For "Start Visit" workflow
+  existingVisit?: ExistingVisit | null;
 }
 
 const STAGES = [
@@ -103,7 +103,7 @@ export function AddVisitDialog({
   const { t } = useTranslation("visits");
   const [currentStage, setCurrentStage] = React.useState(1);
   const [existingVisitId, setExistingVisitId] = React.useState<string | null>(
-    null
+    null,
   );
   const initialFormData: VisitFormData = {
     patientId: null,
@@ -159,7 +159,7 @@ export function AddVisitDialog({
   };
 
   const getPatient = async (
-    patientId: string
+    patientId: string,
   ): Promise<
     { date_of_birth: Date; gender: string; address: string } | undefined
   > => {
@@ -208,13 +208,12 @@ export function AddVisitDialog({
 
         loadExistingSymptoms(existingVisit.id);
       } else {
-        // Normal "Add Visit" mode
         setExistingVisitId(null);
         setCurrentStage(1);
 
         setFormData({
           ...initialFormData,
-          patient: null, // 👈 important because VisitFormData says patient can be null
+          patient: null,
           visitDate: new Date().toISOString().split("T")[0],
           visitTime: new Date().toTimeString().split(" ")[0].slice(0, 5),
         });
@@ -310,8 +309,8 @@ export function AddVisitDialog({
                       currentStage > stage.id
                         ? "bg-brand/70 text-primary-foreground border-brand/10"
                         : currentStage === stage.id
-                        ? "bg-brand text-primary-foreground border-brand/10 ring-4 ring-brand/10"
-                        : "bg-background text-muted-foreground border-muted"
+                          ? "bg-brand text-primary-foreground border-brand/10 ring-4 ring-brand/10"
+                          : "bg-background text-muted-foreground border-muted",
                     )}
                   >
                     {currentStage > stage.id ? (
@@ -337,7 +336,7 @@ export function AddVisitDialog({
                       "mt-2 text-xs text-center max-w-[100px]",
                       currentStage >= stage.id
                         ? "text-foreground font-medium"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground",
                     )}
                   >
                     {t(`add.stages.${stage.key}.title`)}
@@ -347,7 +346,7 @@ export function AddVisitDialog({
                   <div
                     className={cn(
                       "h-1 flex-1 mx-2 transition-colors",
-                      currentStage > stage.id ? "bg-brand" : "bg-muted"
+                      currentStage > stage.id ? "bg-brand" : "bg-muted",
                     )}
                   />
                 )}
