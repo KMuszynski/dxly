@@ -29,7 +29,8 @@ import { cn } from "@/lib/utils";
 
 // API endpoint
 const DIAGNOSIS_API_URL =
-  process.env.NEXT_PUBLIC_DIAGNOSIS_API_URL || "http://localhost:5001";
+  process.env.NEXT_PUBLIC_DIAGNOSIS_API_URL ||
+  (process.env.NODE_ENV === "production" ? "" : "http://localhost:5001");
 
 interface PatientSymptom {
   symptom: string;
